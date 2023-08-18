@@ -10,8 +10,6 @@ import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Map;
 
-import org.apache.commons.cli.*;
-import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -24,11 +22,11 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 
-import org.openqa.selenium.Cookie;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+// import org.openqa.selenium.Cookie;
+// import org.openqa.selenium.WebDriver;
+// import org.openqa.selenium.chrome.ChromeDriver;
+// import org.springframework.boot.SpringApplication;
+// import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 
 @SpringBootApplication
@@ -53,10 +51,8 @@ public class RestApiApplication {
      * @param args Command line arguments
      * @throws IOException
      */
-    public static void main(String[] args) throws IOException {
-        //parse(args);
+    public static void main(String[] args) {
         SpringApplication.run(RestApiApplication.class, args);
-        //System.out.println(getLeagueStandings());
         //getAllPlayersToFile();
     }
 
@@ -71,16 +67,6 @@ public class RestApiApplication {
     private static String connectToAPI(String url) throws IOException {
         CloseableHttpClient httpClient = HttpClients.createDefault();
         HttpGet get = new HttpGet(url);
-        // WebDriver webdriver = new ChromeDriver();
-        // webdriver.get("https://fantasy.premierleague.com/");
-        // Set<Cookie> cookies = webdriver.manage().getCookies();
-        // String cookie_name = "";
-        // String cookie_val = "";
-        // for (Cookie c : cookies) {
-        //     cookie_name = c.getName();
-        //     cookie_val = c.getValue();
-        // }
-
         get.setHeader("Cookie", "cookie=" + auth_cookie);
 
         try (CloseableHttpResponse response = httpClient.execute(get)) {
@@ -91,10 +77,17 @@ public class RestApiApplication {
         }
     }
 
+    /**
+     *  Creates an HTTP client and sends a GET request to a provided API endpoint
+     * 
+     * @param url The url of the api endpoint that the connection should be established between
+     * @param keys The names of the desired keys of the JSON map to include in the output
+     * @return A String array. Each String in the array is the body of the specified JSON key
+     * @throws IOException if an error connecting occurs
+     */
     private static String[] connectToAPI(String url, String... keys) throws IOException {
         CloseableHttpClient httpClient = HttpClients.createDefault();
         HttpGet get = new HttpGet(url);
-
         get.setHeader("Cookie", "cookie=" + auth_cookie);
 
         try (CloseableHttpResponse response = httpClient.execute(get)) {
@@ -139,20 +132,27 @@ public class RestApiApplication {
     //endregion
 
     //region DATA PROCESSING
-    public static ArrayList<Player> getLeagueRanking(String... standings) throws JsonProcessingException {
+    /**
+     * A method that gets all the players in a given league and creates Player objects for them
+     * 
+     * @param keyNames The String names of the keys in whose body the relevant information is
+     * @return An ArrayList of every player in the league as a Player objects
+     * @throws JsonProcessingException if there is an error processing the string as a JSON
+     */
+    public static ArrayList<Player> getLeagueRanking(String... keyNames) throws JsonProcessingException {
         ObjectMapper objmapper = new ObjectMapper();
-        Map<String, Object> jsonMap1 = objmapper.readValue(standings[0], new TypeReference<Map<String, Object>>() {});
+        Map<String, Object> jsonMap1 = objmapper.readValue(keyNames[0], new TypeReference<Map<String, Object>>() {});
         ArrayList<Player> players = new ArrayList<>();
 
         String results_all_info = objmapper.writeValueAsString(jsonMap1.get("results"));
         JsonNode root = objmapper.readTree(results_all_info);
         for (JsonNode node : root) {
-            int id = node.get("id").asInt();
-            String player_name = node.get("player_name").asText();
-            String rank_in_league = node.get("rank_sort").asText();
+            int entry = node.get("entry").asInt();
             int total_score = node.get("total").asInt();
             int score_this_gw = node.get("event_total").asInt();
-            players.add(new Player(id, player_name, rank_in_league, total_score, score_this_gw));
+            String player_name = node.get("player_name").asText();
+            String rank_in_league = node.get("rank_sort").asText();
+            players.add(new Player(entry, player_name, rank_in_league, total_score, score_this_gw));
         }
         return players;
     }
