@@ -13,5 +13,4 @@ public class Controller {
     public String[] leagues() throws IOException {
         return RestApiApplication.getLeagueStandings();
     }
-    
 }

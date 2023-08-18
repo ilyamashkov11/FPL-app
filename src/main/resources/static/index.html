@@ -1,32 +1,14 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <title>FPLStats</title>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width = device-width, initial-scale = 1">
-        <link rel = "stylesheet" href = "style.css">
-    </head>
-    <body>
-        <h2 class="h2tag">
-            FPLStats
-        </h2>
-        <button>
-            <a href="https://fantasy.premierleague.com/" target="_blank">
-                CLICK ME
-            </a>
-        </button>
-        <div class="random_text">
-            <div id="response"></div>
-            <script>
-                fetch('/api/league')
-                    .then(response => response.text())
-                    .then(data => {
-                        document.getElementById('response').textContent = data;
-                    })
-                    .catch(error => {
-                    console.error('Error fetching data:', error);
-                });
-            </script>
-        </div>
-    </body>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="FPL Wizard is a tool that helps you visualise your mini leagues and also helps you make the best picks for your team to help you win.">
+    <link rel="stylesheet" href="style.css" />
+    <title>FPL Wizard</title>
+  </head>
+  <body>
+    <h1 class="main_name">Fantasy Premier League Wizard</h1>
+    <a href="/page2.html" class="link_to_fpl_page">page 2</a>
+  </body>
 </html>

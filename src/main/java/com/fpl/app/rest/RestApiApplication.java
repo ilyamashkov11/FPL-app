@@ -165,7 +165,7 @@ public class RestApiApplication {
         PrintStream output = new PrintStream(file);
 
         for (int i = 1; i < max; i++) {
-            String[] info = connectToAPI(manager_url + i, "player_first_name", "player_last_name", "id");   
+            String[] info = connectToAPI(manager_url + i, "player_first_name", "player_last_name", "entry");   
             for (String string : info) {
                 output.print(string + ", ");
             }

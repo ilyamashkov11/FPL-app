@@ -69,6 +69,75 @@
 					<target>17</target>
 				</configuration>
 			</plugin>
+
+			<plugin>
+                <groupId>com.github.eirslett</groupId>
+                <artifactId>frontend-maven-plugin</artifactId>
+                <version>1.13.4</version>
+                <executions>
+                    <execution>
+                        <id>Install node and npm</id>
+                        <goals>
+                            <goal>install-node-and-npm</goal>
+                        </goals>
+                        <phase>generate-resources</phase>
+                        <configuration>
+                            <nodeVersion>v18.17.1</nodeVersion>
+                            <npmVersion>9.6.7</npmVersion>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>npm install all dependencies</id>
+                        <goals>
+                            <goal>npm</goal>
+                        </goals>
+                        <phase>generate-resources</phase>
+                        <configuration>
+                            <arguments>install</arguments>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>npm build react application</id>
+                        <goals>
+                            <goal>npm</goal>
+                        </goals>
+                        <phase>generate-resources</phase>
+                        <configuration>
+                            <arguments>run build</arguments>
+                        </configuration>
+                    </execution>
+                </executions>
+                <configuration>
+                    <nodeVersion>v18.17.1</nodeVersion>
+                    <workingDirectory>src/main/frontend</workingDirectory>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>Copy react frontend into my Spring Boot target static folder</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>target/classes/static</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>src/main/frontend/build</directory>
+                                    <filtering>true</filtering>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
 		</plugins>
 	</build>
 
