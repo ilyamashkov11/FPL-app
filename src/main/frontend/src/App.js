@@ -5,7 +5,7 @@ function App() {
   const [data, setData] = useState(null);
 
   useEffect(() => {
-    fetch('/api/league') // Replace with your actual API endpoint
+    fetch('/api/league')
       .then(response => response.text())
       .then(data => {
         setData(data);
