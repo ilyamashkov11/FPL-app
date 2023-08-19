@@ -1,7 +1,7 @@
 
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import Greet from './components/Greet';
-import Welcome from './components/Welcome';
+// import Welcome from './components/Welcome';
 import './App.css';
 
 function App() {
