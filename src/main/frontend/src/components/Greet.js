@@ -1,5 +1,9 @@
 import React from "react";
+import Welcome from "./Welcome";
 
-const Greet = () => <h1>Hello Ilya Mashy</h1>
+function Greet() {
+    return (
+    <><h1>Hello Ilya Mashy</h1><Welcome /></>);
+}
 
 export default Greet;
