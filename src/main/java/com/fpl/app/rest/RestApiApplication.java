@@ -4,9 +4,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 
-import java.io.File;
+// import java.io.File;
 import java.io.IOException;
-import java.io.PrintStream;
+// import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -36,11 +36,11 @@ public class RestApiApplication {
     /*
      * ALL API ENDPOINTS
      */
-    private static String bootstrap_url = "https://fantasy.premierleague.com/api/bootstrap-static/";
+    // private static String bootstrap_url = "https://fantasy.premierleague.com/api/bootstrap-static/";
     private static String league_standings__url = "https://fantasy.premierleague.com/api/leagues-classic/" + league_id + "/standings/"; 
     private static String my_info_url = "https://fantasy.premierleague.com/api/me/";    
-    private static String element_url = "https://fantasy.premierleague.com/api/me/";
-    private static String manager_url = "https://fantasy.premierleague.com/api/entry/";
+    // private static String element_url = "https://fantasy.premierleague.com/api/me/";
+    // private static String manager_url = "https://fantasy.premierleague.com/api/entry/";
 
     //* My personal authentication coookie that can be used to authenticate certain API endpoints */
     private static String auth_cookie = "OptanonAlertBoxClosed=2023-07-10T07:25:16.449Z; pl_profile=\"eyJzIjogIld6SXNOVE13T1RRd09EaGQ6MXFUREdZOlRjdnBxekg1RjhZa1IzeHhGM3hkUkcyUktrcHoxY29VcTNyWjdKS09hNE0iLCAidSI6IHsiaWQiOiA1MzA5NDA4OCwgImZuIjogIklseWEiLCAibG4iOiAiTWFzaGtvdiIsICJmYyI6IDh9fQ==\"; csrftoken=Msq5b2WrTssjMgbGYMeR3dGnTKzLEiwV; sessionid=.eJxVy7sKAjEQheF3SS3LxMlkEjt7QWGxDrlMiLjI4rqV-O5mOy0P3_nfKsT11cK6yDPcijooQvAGnFO7X0ox3-Wx-TzVeRo2GS6na7dlHM_HPv-DFpfW396iQUpes1Cx1qOtojWVDFAyiymSqq4x1ch57zhDd2YiLYTsAdXnC_zjMxc:1qTDGZ:s81okhJHb6siD1C6Ed1-ZXaBbg_bZOUD3pspLyJOI3g; _gid=GA1.2.784032826.1691847739; OptanonConsent=isGpcEnabled=0&datestamp=Sun+Aug+13+2023+16%3A07%3A12+GMT%2B1200+(New+Zealand+Standard+Time)&version=202302.1.0&isIABGlobal=false&hosts=&consentId=39f0464c-91bc-468d-a36f-8f9b3ee7dec9&interactionCount=1&landingPath=NotLandingPage&groups=C0001%3A1%2CC0002%3A1%2CC0003%3A1%2CC0004%3A1&geolocation=NZ%3BWGN&AwaitingReconsent=false; _ga=GA1.2.80360647.1688973917; datadome=4SVXRHjbqUzpQBffxnTNhItWZeQ5iK6ghw4IeqBoTSoRihh9yNMGAPVcA5sVnmNojS_0-403wGvxwbUE6dLFyHq-YzOKpKFA4qyDpXGYnbKGu6QWFxCUFOo3xMj41OoC; _dc_gtm_UA-33785302-1=1; _ga_844XQSF4K8=GS1.1.1691898112.44.1.1691899809.23.0.0";
@@ -158,22 +158,22 @@ public class RestApiApplication {
     }
     //endregion
 
-    private static void getAllPlayersToFile() throws IOException {
-        int max = 20000000;
-        File file = new File("Data/player_dictionary.csv");
-        file.createNewFile();
-        PrintStream output = new PrintStream(file);
+    // private static void getAllPlayersToFile() throws IOException {
+    //     int max = 20000000;
+    //     File file = new File("Data/player_dictionary.csv");
+    //     file.createNewFile();
+    //     PrintStream output = new PrintStream(file);
 
-        for (int i = 1; i < max; i++) {
-            String[] info = connectToAPI(manager_url + i, "player_first_name", "player_last_name", "entry");   
-            for (String string : info) {
-                output.print(string + ", ");
-            }
-            output.print("\n");
-        }
-        output.close();
+    //     for (int i = 1; i < max; i++) {
+    //         String[] info = connectToAPI(manager_url + i, "player_first_name", "player_last_name", "entry");   
+    //         for (String string : info) {
+    //             output.print(string + ", ");
+    //         }
+    //         output.print("\n");
+    //     }
+    //     output.close();
 
-    }
+    // }
 
     //region METHOD TO BE USED BY FRONTEND
     /* 

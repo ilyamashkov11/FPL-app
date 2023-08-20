@@ -1,9 +1,13 @@
 import React from "react";
-import Welcome from "./Welcome";
+// import Welcome from "./Welcome";
 
-function Greet() {
+function Greet(props) {
+    console.log(props);
     return (
-    <><h1>Hello Ilya Mashy</h1><Welcome /></>);
+    <div>
+        <h1>Hello {props.name} {props.lastname}</h1>
+        {props.children}
+    </div>);
 }
 
 export default Greet;
