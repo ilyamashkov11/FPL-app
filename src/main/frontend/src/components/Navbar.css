@@ -1,3 +1,83 @@
-.navBar {
-    text-align: end;
-  }
+*::before {
+   margin: 0;
+   box-sizing: border-box;
+}
+
+li {
+    list-style: none;
+}
+
+a {
+    text-decoration: none;
+}
+
+/* nav links in the top right */
+.navMenu a {
+    color: black;
+    font-weight: 1000;
+    font-size: 20px;
+}
+
+.nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 8vh;
+    /* background: rgb(255, 0, 0); */
+    background-image: linear-gradient(45deg, rgba(38, 21, 12, 0.36) 0%, rgba(38, 21, 12, 0.36) 2%,rgba(145, 27, 35, 0.36) 2%, rgba(145, 27, 35, 0.36) 5%,rgba(65, 22, 18, 0.36) 5%, rgba(65, 22, 18, 0.36) 39%,rgba(11, 19, 6, 0.36) 39%, rgba(11, 19, 6, 0.36) 41%,rgba(172, 28, 41, 0.36) 41%, rgba(172, 28, 41, 0.36) 69%,rgba(118, 25, 29, 0.36) 69%, rgba(118, 25, 29, 0.36) 79%,rgba(199, 30, 47, 0.36) 79%, rgba(199, 30, 47, 0.36) 87%,rgba(92, 24, 24, 0.36) 87%, rgba(92, 24, 24, 0.36) 100%),linear-gradient(45deg, rgba(86, 93, 205, 0.34) 0%, rgba(86, 93, 205, 0.34) 12.5%,rgba(158, 71, 211, 0.34) 12.5%, rgba(158, 71, 211, 0.34) 25%,rgba(110, 86, 207, 0.34) 25%, rgba(110, 86, 207, 0.34) 37.5%,rgba(254, 41, 220, 0.34) 37.5%, rgba(254, 41, 220, 0.34) 50%,rgba(230, 48, 218, 0.34) 50%, rgba(230, 48, 218, 0.34) 62.5%,rgba(182, 63, 214, 0.34) 62.5%, rgba(182, 63, 214, 0.34) 75%,rgba(206, 56, 216, 0.34) 75%, rgba(206, 56, 216, 0.34) 87.5%,rgba(134, 78, 209, 0.34) 87.5%, rgba(134, 78, 209, 0.34) 100%),linear-gradient(177deg, rgb(9, 74, 160),rgb(248, 53, 57));;
+}
+
+.logoAndBrand {
+    display: flex;
+    margin: 10px 2rem 10px 2rem;
+}
+
+.brandName{
+    color: black;
+    font-weight: bolder;
+    font-size: 30px;
+}
+
+.navMenu {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    margin-right: 10px 2rem 10px 2rem;
+    padding-right: 100px;
+    gap: 3rem;
+}
+
+.nav_toggler div {
+    width: 3rem;
+    height: 0.2rem;
+    margin: 0.4rem;
+    background: darkgray;
+}
+
+.nav_toggler {
+    cursor: pointer;
+    display: none;
+}
+
+@media screen and (max-width: 768px) {
+    .nav_toggler {
+        display: block;
+    }
+    .navMenu {
+        position: fixed;
+        top: 7vh;
+        right: 0;
+        width: 25%;
+        height: 93vh;
+        background: rgb(0, 252, 25);
+        flex-direction: column;
+        transform: translateX(100%);
+        transition: 0.05s ease-in;
+    }
+}
+.nav_active {
+    transform: translateX(0);
+}
+
+
+
