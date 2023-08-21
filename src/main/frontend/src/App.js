@@ -1,12 +1,16 @@
 
 import React from 'react';
+
+import Navbar from './components/Navbar';
+
 import './App.css';
 
 function App() {
   return (
-    <div className="App">
-      <h1>FPLWizard</h1>
-    </div>
+      <div className="App">
+        <h1 className='appTitle'>FPLWizard</h1>
+        <Navbar />
+      </div>
   );
 }
 
