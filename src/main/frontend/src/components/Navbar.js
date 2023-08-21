@@ -7,19 +7,6 @@ function Navbar() {
         active === 'navMenu' ? setActive('navMenu nav_active') : setActive('navMenu');
     }
   return (
-    // <header>
-    //     <div className='logoAndTitle'>
-    //         <h3 className='logo'>logo</h3>
-    //         <h3 className='mainTitle'>FPLWizard</h3>
-    //     </div>
-    //     <nav>
-    //         <a href='/#' className='homeLink'>Home</a>
-    //         <a href='/#' className='aboutLink'>About</a>
-    //         <a href='https://fantasy.premierleague.com/' target='_blank' className='goToFplLink'>FPL</a>
-    //     </nav>
-    // </header>
-
-    
     <nav className='nav'>
         <div className='logoAndBrand'>
             <h2 className='logo'>logo</h2>

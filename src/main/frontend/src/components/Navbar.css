@@ -18,6 +18,10 @@ a {
     font-size: 20px;
 }
 
+.navMenu a:hover {
+    color: palevioletred;
+}
+
 .nav {
     display: flex;
     align-items: center;
