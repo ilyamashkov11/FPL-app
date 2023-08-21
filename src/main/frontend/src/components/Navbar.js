@@ -17,10 +17,13 @@ function Navbar() {
                 <a href='/#' className='aboutLink'>About</a>
             </li>
             <li className='nav_item2'>
-                <a href='/#' className='homeLink'>Player Stats</a>
+                <a href='/#' className='playerStatsLink'>Player Stats</a>
             </li>
             <li className='nav_item3'>
-                <a href='/#' className='homeLink'>Team Stats</a>
+                <a href='/#' className='teamStatsLink'>Team Stats</a>
+            </li>
+            <li className='nav_item4'>
+                <a href='#' className='suggestionsLink'>Suggestions</a>
             </li>
             <li className='nav_item4'>
                 <a href='https://fantasy.premierleague.com/' target='_blank' className='goToFplLink'>FPL</a>

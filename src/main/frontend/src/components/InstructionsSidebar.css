@@ -11,7 +11,7 @@
     right: 25%;
     top: 200px; /* Adjust the top position to leave space for the navbar */
     bottom: 700px;
-    box-shadow: 2px 0px 5px rgba(0, 0, 0, 0.3);
+    /* box-shadow: 2px 0px 5px rgba(0, 0, 0, 0.3); */
     overflow-y: auto; /* Allow scrolling if content exceeds the height */
     box-shadow: 0px 0px 100px rgba(0, 0, 0, 0.8); /* Add a shadow effect */
     border-radius: 10px; /* Add rounded corners for a softer look */
