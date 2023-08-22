@@ -41,46 +41,63 @@ public class RestApiApplication {
     private static String my_info_url = "https://fantasy.premierleague.com/api/me/";
     // private static String element_url =
     // "https://fantasy.premierleague.com/api/me/";
-    // private static String manager_url =
-    // "https://fantasy.premierleague.com/api/entry/";
+    private static String manager_url = "https://fantasy.premierleague.com/api/entry/";
 
     // * My personal authentication coookie that can be used to authenticate certain
     // API endpoints */
-    private static String auth_cookie = "OptanonAlertBoxClosed=2023-07-10T07:25:16.449Z; pl_profile=\"eyJzIjogIld6SXNOVE13T1RRd09EaGQ6MXFUREdZOlRjdnBxekg1RjhZa1IzeHhGM3hkUkcyUktrcHoxY29VcTNyWjdKS09hNE0iLCAidSI6IHsiaWQiOiA1MzA5NDA4OCwgImZuIjogIklseWEiLCAibG4iOiAiTWFzaGtvdiIsICJmYyI6IDh9fQ==\"; csrftoken=Msq5b2WrTssjMgbGYMeR3dGnTKzLEiwV; sessionid=.eJxVy7sKAjEQheF3SS3LxMlkEjt7QWGxDrlMiLjI4rqV-O5mOy0P3_nfKsT11cK6yDPcijooQvAGnFO7X0ox3-Wx-TzVeRo2GS6na7dlHM_HPv-DFpfW396iQUpes1Cx1qOtojWVDFAyiymSqq4x1ch57zhDd2YiLYTsAdXnC_zjMxc:1qTDGZ:s81okhJHb6siD1C6Ed1-ZXaBbg_bZOUD3pspLyJOI3g; _gid=GA1.2.784032826.1691847739; OptanonConsent=isGpcEnabled=0&datestamp=Sun+Aug+13+2023+16%3A07%3A12+GMT%2B1200+(New+Zealand+Standard+Time)&version=202302.1.0&isIABGlobal=false&hosts=&consentId=39f0464c-91bc-468d-a36f-8f9b3ee7dec9&interactionCount=1&landingPath=NotLandingPage&groups=C0001%3A1%2CC0002%3A1%2CC0003%3A1%2CC0004%3A1&geolocation=NZ%3BWGN&AwaitingReconsent=false; _ga=GA1.2.80360647.1688973917; datadome=4SVXRHjbqUzpQBffxnTNhItWZeQ5iK6ghw4IeqBoTSoRihh9yNMGAPVcA5sVnmNojS_0-403wGvxwbUE6dLFyHq-YzOKpKFA4qyDpXGYnbKGu6QWFxCUFOo3xMj41OoC; _dc_gtm_UA-33785302-1=1; _ga_844XQSF4K8=GS1.1.1691898112.44.1.1691899809.23.0.0";
+    private static String auth_cookie = "OptanonAlertBoxClosed=2023-07-10T07:25:16.449Z; csrftoken=Msq5b2WrTssjMgbGYMeR3dGnTKzLEiwV; _gid=GA1.2.571040184.1692587203; _ga=GA1.3.80360647.1688973917; OptanonConsent=isGpcEnabled=0&datestamp=Tue+Aug+22+2023+18%3A12%3A29+GMT%2B1200+(New+Zealand+Standard+Time)&version=202302.1.0&isIABGlobal=false&hosts=&consentId=39f0464c-91bc-468d-a36f-8f9b3ee7dec9&interactionCount=1&landingPath=NotLandingPage&groups=C0001%3A1%2CC0002%3A1%2CC0003%3A1%2CC0004%3A1&geolocation=NZ%3BWGN&AwaitingReconsent=false; _ga=GA1.2.80360647.1688973917; datadome=batBZB0~eHAtt1OffuQYca_~QgHsWld0BALqFnFN3UPawWXoRzKuOl9ZLZv8WhVugLEryp0~6kSn~scUZC3w~r~lSeoK24Tnvd8eZTOLjUIpWFN-jgyZk~VPVZ4RpMs; pl_profile=\"eyJzIjogIld6SXNOVE13T1RRd09EaGQ6MXFZS2V5OldYMG1WeldVNnFxUGNGWGtUaUxSVENFZlNJUGZpazc3TTJiRXk2YXlTQzAiLCAidSI6IHsiaWQiOiA1MzA5NDA4OCwgImZuIjogIklseWEiLCAibG4iOiAiTWFzaGtvdiIsICJmYyI6IDh9fQ==\"; _ga_844XQSF4K8=GS1.1.1692683208.78.1.1692684876.60.0.0";
 
     /**
      * The main method
      * 
      * @param args Command line arguments
      * @throws IOException
+     * @throws SQLException
+     * @throws ClassNotFoundException
      */
-    public static void main(String[] args) {
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            populateUsersTable();
-        } catch (SQLException e) {e.printStackTrace();} catch (ClassNotFoundException n) {n.printStackTrace();}
-        SpringApplication.run(RestApiApplication.class, args);
-        // getAllPlayersToFile();
+    public static void main(String[] args) throws IOException, SQLException, ClassNotFoundException {
+        // populateUsersTable();
+        
+        // SpringApplication.run(RestApiApplication.class, args);
+        
+
+        // clearTable();
+        
     }
 
-    public static void populateUsersTable() throws SQLException, ClassNotFoundException {
+    public static void populateUsersTable() throws SQLException, ClassNotFoundException, IOException {
         try (Connection connection = ConnectionPoolManager.getDataSource().getConnection()) {
-        String firstName = "";
-        String latName = "";
-        int entry = 90;
-        String teamName = "";
+            int totalPlayers = 0;
+            for (int i = 2310; i < 12000000; i++) {
+                String sql = "INSERT INTO Users (entry_id, first_name, last_name, team_name) VALUES (?, ?, ?, ?)";
 
-        // Do database operations here
-        String sql = "INSERT INTO users (entry_id, first_name, last_name, team_name) VALUES (?, ?, ?, ?)";
-        PreparedStatement preparedStatement = connection.prepareStatement(sql);
-        preparedStatement.setInt(1, entry);
-        preparedStatement.setString(2, "firstName");
-        preparedStatement.setString(3, "lastName");
-        preparedStatement.setString(4, "teamName");
-
-        int rowsAffected = preparedStatement.executeUpdate();
-        System.out.println(rowsAffected + " row(s) inserted.");
+                try {
+                    Player p = getPlayer(i, "id", "player_first_name", "player_last_name", "name");
+                    String entry = p.getEntry();
+                    String firstName = p.getFirstName();
+                    String lastName = p.getLastName();
+                    String teamName = p.getTeamName();
+                    PreparedStatement preparedStatement = connection.prepareStatement(sql);
+                    preparedStatement.setString(1, entry);
+                    preparedStatement.setString(2, firstName);
+                    preparedStatement.setString(3, lastName);
+                    preparedStatement.setString(4, teamName);
+                    int rowsAffected = preparedStatement.executeUpdate();
+                    totalPlayers = rowsAffected;
+                } catch (JsonProcessingException jp) {jp.printStackTrace();}
+            }
+            System.out.println(totalPlayers + " row(s) inserted.");
         }
+    }
+
+    public static void clearTable() throws SQLException {
+        try (Connection connection = ConnectionPoolManager.getDataSource().getConnection()) {
+            String deleteQuery = "DELETE FROM Users";
+            PreparedStatement preparedStatement = connection.prepareStatement(deleteQuery);
+            int rowsDeleted = preparedStatement.executeUpdate(deleteQuery);
+            System.out.println(rowsDeleted + " rows deleted.");
+        }
+
     }
     // endregion
 
@@ -100,7 +117,7 @@ public class RestApiApplication {
         try (CloseableHttpResponse response = httpClient.execute(get)) {
             String outputBody = EntityUtils.toString(response.getEntity());
             response.close();
-            System.out.println("Connection Established Successfuly");
+            // System.out.println("Connection Established Successfuly");
             return convertToReadableJSON(outputBody);
         }
     }
@@ -119,12 +136,12 @@ public class RestApiApplication {
     private static String[] connectToAPI(String url, String... keys) throws IOException {
         CloseableHttpClient httpClient = HttpClients.createDefault();
         HttpGet get = new HttpGet(url);
-        get.setHeader("Cookie", "cookie=" + auth_cookie);
+        get.setHeader("cookie", "cookie=" + auth_cookie);
 
         try (CloseableHttpResponse response = httpClient.execute(get)) {
             String outputBody = EntityUtils.toString(response.getEntity());
             response.close();
-            System.out.println("Connection Established Successfuly");
+            // System.out.println("Connection Established Successfuly");
             return convertToReadableJSON(outputBody, keys);
         }
     }
@@ -204,6 +221,12 @@ public class RestApiApplication {
             players.add(new Player(entry, player_name, rank_in_league, total_score, score_this_gw));
         }
         return players;
+    }
+
+    public static Player getPlayer(int id, String... keynames) throws IOException {
+        String[] result = connectToAPI(manager_url + String.valueOf(id), keynames);
+        Player p = new Player(result[0], result[1], result[2], result[3]);
+        return p;
     }
     // endregion
 
