@@ -43,6 +43,10 @@ a {
     font-size: 30px;
 }
 
+.brandName:hover {
+    color: inherit;
+}
+
 .navMenu {
     display: flex;
     align-items: center;
