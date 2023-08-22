@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fpl.app.rest.RestApiApplication;
 import org.json.JSONObject;
-import com.fpl.app.rest.Controller.SearchRequest;
 
 @RestController
 public class Controller {
