@@ -14,15 +14,24 @@ function Searchbar() {
     }
   }
 
+  const handleKeyPress = (event, value) => {
+    if (event.key === "Enter") {
+      const response = callAPI('/api/search', 'POST', value)
+      console.log(response)
+    }
+  }
+
   return (
     <div className="container">
       <div className="bar">
         <FaSearch className="searchIcon" />
         <input
           className="searchInput"
-          placeholder="Type Your Name..."
+          placeholder="Type Your Name/Team Name..."
           value={input}
           onChange={(e) => handleChange(e.target.value)}
+          // onChange={(e) => setInput(e.target.value)}
+          onKeyDown={(e) => handleKeyPress(e, input)}
         />
       </div>
       <div className="results">search bar results</div>

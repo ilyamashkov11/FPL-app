@@ -1,6 +1,7 @@
 package com.fpl.app.rest.Controller;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 // import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,13 +27,14 @@ public class Controller {
     }
 
     @PostMapping("/api/search")
-    public String search(@RequestBody String requestBody) throws IOException {
+    public String search(@RequestBody String requestBody) throws IOException, SQLException, ClassNotFoundException {
         if (requestBody.isBlank()) { return "";}
-        System.out.println(requestBody);
-        // SearchRequest searchRequest = objectMapper.readValue(requestBody, SearchRequest.class);
-        // String userInput = searchRequest.data(); // Use the accessor method to get the data
+        // System.out.println(requestBody);
+        String formatted = requestBody.replace("\"", "").toLowerCase(); // strings in requestbody have double quotes for some reason
+        String toReturn = RestApiApplication.findInDB(formatted);
+
         JSONObject jsonObj = new JSONObject();
-        jsonObj.put("data", requestBody);
+        jsonObj.put("data", toReturn);
         return jsonObj.toString();
     }
 }

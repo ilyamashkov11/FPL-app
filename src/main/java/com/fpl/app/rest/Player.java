@@ -1,6 +1,5 @@
 package com.fpl.app.rest;
 
-import net.bytebuddy.implementation.bind.annotation.Super;
 
 public class Player {
     String entry;
