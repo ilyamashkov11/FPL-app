@@ -58,19 +58,18 @@ public class RestApiApplication {
      */
     public static void main(String[] args) throws IOException, SQLException, ClassNotFoundException {
         // populateUsersTable();
-        
+
         SpringApplication.run(RestApiApplication.class, args);
-        
 
         // clearTable();
-        
+
     }
 
     public static void populateUsersTable(String entry) throws SQLException, ClassNotFoundException, IOException {
         try (Connection connection = ConnectionPoolManager.getDataSource().getConnection()) {
             String sql = "INSERT INTO Users (entry_id, first_name, last_name, team_name) VALUES (?, ?, ?, ?)";
             try {
-                Player p = getPlayer(Integer.valueOf(entry),"id", "player_first_name", "player_last_name", "name");
+                Player p = getPlayer(Integer.valueOf(entry), "id", "player_first_name", "player_last_name", "name");
                 String entry1 = p.getEntry();
                 String firstName = p.getFirstName();
                 String lastName = p.getLastName();
@@ -82,8 +81,10 @@ public class RestApiApplication {
                 preparedStatement.setString(4, teamName);
                 int rowsAffected = preparedStatement.executeUpdate();
                 System.out.println(rowsAffected + " row(s) inserted.");
-            } catch (JsonProcessingException jp) {jp.printStackTrace();}
-            
+            } catch (JsonProcessingException jp) {
+                jp.printStackTrace();
+            }
+
         }
     }
 
@@ -97,59 +98,52 @@ public class RestApiApplication {
 
     }
 
-    public static String findInDB(String input) throws SQLException, ClassNotFoundException, IOException {
-        // System.out.println("input = " +input);
-        if (containsOnlyNumbers(input)) {
-            try (Connection connection = ConnectionPoolManager.getDataSource().getConnection()) {
-                String sqlSelect = "SELECT * FROM Users WHERE entry_id = ?";
-                PreparedStatement preparedStatement = connection.prepareStatement(sqlSelect);
-                preparedStatement.setString(1, input);
-                ResultSet result = preparedStatement.executeQuery();
+    public static String[] findTeamNameInDB(String input) throws SQLException, ClassNotFoundException, IOException {
+        System.out.println(input);
+        ArrayList<String> teamNames = new ArrayList<>();
+        try (Connection connection = ConnectionPoolManager.getDataSource().getConnection()) {
+            String sql = "SELECT * FROM Users WHERE team_name LIKE ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            // preparedStatement.setString(1, "\"" + input + "\"");  
+            preparedStatement.setString(1, "%" + input + "%");
 
-                if (result.next()) {
-                    String entry_id = result.getString("entry_id");
-                    return "PLAYER EXISTS: " + entry_id;
-                } else {
-                    populateUsersTable(input);
-                    return "ADDED TO DB";
-                } 
-            }
-        } else if (containsOnlyLetters(input)) {
-            try (Connection connection = ConnectionPoolManager.getDataSource().getConnection()) {
-                String sql = "SELECT * FROM Users WHERE team_name = ?";
-                PreparedStatement preparedStatement = connection.prepareStatement(sql);
-                System.out.println(input);
-                preparedStatement.setString(1, input); //! THIS ISNT WORKING
-                ResultSet result = preparedStatement.executeQuery();
-                System.out.println(result.next());
+            ResultSet result = preparedStatement.executeQuery();
 
-                if (result.next()) {
-                    String teamname = result.getString("team_name");
-                    System.out.println("input = " +input);
-                    System.out.println("team name = "+teamname);
-                    return teamname;
-                } else {
-                    return "This team name is not in the db, please enter your ID";
-                }
+            while (result.next()) {
+                String teamname = result.getString("team_name");
+                teamNames.add(teamname);
             }
+            return teamNames.toArray(new String[teamNames.size()]);
         }
-        return "Not a Valid ID or TeamName";
     }
 
-    public static Boolean containsOnlyLetters(String input) {
-        for (int i = 0; i < input.length(); i++) {
-            char c = input.toCharArray()[i];
-            if (!Character.isLetter(c) && !Character.isWhitespace(c)) { return false; }
+    public static String[] findIDinDB(String input) throws SQLException, ClassNotFoundException, IOException {
+        String[] output = new String[1];
+        try (Connection connection = ConnectionPoolManager.getDataSource().getConnection()) {
+            String sqlSelect = "SELECT * FROM Users WHERE entry_id = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(sqlSelect);
+            preparedStatement.setString(1, input);
+            ResultSet result = preparedStatement.executeQuery();
+
+            if (result.next()) {
+                String entry_id = result.getString("entry_id");
+                output[0] = entry_id;
+                return output;
+            } else {
+                populateUsersTable(input);
+                return output;
+            }
         }
-        return true;
     }
 
-    public static Boolean containsOnlyNumbers(String input) {
+    public static Boolean containsAnyLetters(String input) {
         for (int i = 0; i < input.length(); i++) {
             char c = input.toCharArray()[i];
-            if (!Character.isDigit(c) && !Character.isWhitespace(c)) { return false; }
+            if (Character.isLetter(c) && !Character.isWhitespace(c)) {
+                return true;
+            }
         }
-        return true;
+        return false;
     }
     // endregion
 

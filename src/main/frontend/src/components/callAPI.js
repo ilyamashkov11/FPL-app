@@ -14,7 +14,6 @@ async function callAPI(endpoint, method = 'GET', data = null) {
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
-    
         const responseData = await response.json();
         return responseData;
       } catch (error) {

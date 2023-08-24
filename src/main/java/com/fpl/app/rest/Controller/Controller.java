@@ -29,10 +29,9 @@ public class Controller {
     @PostMapping("/api/search")
     public String search(@RequestBody String requestBody) throws IOException, SQLException, ClassNotFoundException {
         if (requestBody.isBlank()) { return "";}
-        // System.out.println(requestBody);
         String formatted = requestBody.replace("\"", "").toLowerCase(); // strings in requestbody have double quotes for some reason
-        String toReturn = RestApiApplication.findInDB(formatted);
-
+        // String toReturn = RestApiApplication.findInDB(formatted);
+        String toReturn[] = RestApiApplication.containsAnyLetters(formatted) ? RestApiApplication.findTeamNameInDB(formatted) : RestApiApplication.findIDinDB(formatted);
         JSONObject jsonObj = new JSONObject();
         jsonObj.put("data", toReturn);
         return jsonObj.toString();

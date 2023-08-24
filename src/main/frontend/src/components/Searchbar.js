@@ -5,20 +5,31 @@ import "./Searchbar.css";
 
 function Searchbar() {
   const [input, setInput] = useState("");
+  const [results, setResults] = useState([]);
 
   const handleChange = (value) => {
     setInput(value)
-    if (value.trim() !=="") {
-        const response = callAPI('/api/search', 'POST', value)
-        console.log(response)
+    setResults([])
+    if (hasChars(value)) {
+      if (value.trim() !=="") {
+        callAPI('/api/search', 'POST', value)
+        .then(response => {setResults(response)})
+      }
     }
   }
 
-  const handleKeyPress = (event, value) => {
+  const handleKeyPress = async (event, value) => {
     if (event.key === "Enter") {
-      const response = callAPI('/api/search', 'POST', value)
-      console.log(response)
+      if (value.trim() !=="") {
+        const response = await callAPI('/api/search', 'POST', value)
+        console.log(response)
+      }
+      setInput("")
     }
+  }
+
+  const hasChars = (input) => {
+    return /[^\d]/.test(input)
   }
 
   return (
@@ -34,7 +45,12 @@ function Searchbar() {
           onKeyDown={(e) => handleKeyPress(e, input)}
         />
       </div>
-      <div className="results">search bar results</div>
+      <div className="resultsContainer">
+        <div className="mainResultText">Team Name</div>
+        <div className="results">
+          {results.data && results.data.map((teamname, index) => (<div key={index}>{teamname.replace(/^"|"$/g, '')}</div>))}
+        </div>
+      </div>
     </div>
   );
 }

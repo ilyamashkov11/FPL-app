@@ -38,3 +38,25 @@
 .searchInput:focus {
     outline: none;
 }
+
+.resultsContainer {
+    display: flex;
+    flex-direction: column;
+    background-color: aliceblue;
+    width: 65%;
+    margin-top: 1rem;
+    border-radius: 5px;
+    align-items: center;
+    padding-right: 20px;
+    overflow-y: scroll;
+}
+
+.mainResultText {
+    font-weight: bolder;
+    font-size: large;
+}
+
+.results {
+    max-height: 200px;
+    padding: 3px;
+}
