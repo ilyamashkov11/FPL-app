@@ -1,8 +1,10 @@
 import {configureStore} from '@reduxjs/toolkit'
+import stateReducer from './State'
 
 import React from 'react'
 
-export default function Store() {
+export default configureStore({
   reducer : {
+    renderState: stateReducer
   }
-}
+})

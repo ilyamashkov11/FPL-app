@@ -2,10 +2,15 @@ import React, { useState } from "react";
 import { FaSearch } from "react-icons/fa";
 import callAPI from "./callAPI";
 import "./Searchbar.css";
+import { useDispatch, useSelector } from "react-redux";
+import { setTrue } from "./redux/State";
 
 function Searchbar() {
   const [input, setInput] = useState("");
   const [results, setResults] = useState([]);
+  const {renderState} = useSelector((state) => state.renderState)
+  const dispatch = useDispatch()
+  console.log(renderState)
 
   const handleChange = (value) => {
     setInput(value)
@@ -51,7 +56,7 @@ function Searchbar() {
           {results.data && results.data.map((teamname, index) => (
             <div 
               className="res" 
-              onClick={(e) => alert("clicked on " + teamname)}
+              onClick={(e) => dispatch(setTrue())}
               key={index}>
                 {teamname.replace(/^"|"$/g, '')}
             </div>))}
