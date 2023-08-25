@@ -207,7 +207,7 @@ public class RestApiApplication {
      * @throws JsonProcessingException if there is an error reading the JSON
      *                                 formatted string
      */
-    private static String convertToReadableJSON(String outputBody) throws JsonProcessingException {
+    public static String convertToReadableJSON(String outputBody) throws JsonProcessingException {
         ObjectMapper objmapper = new ObjectMapper();
         Map<String, Object> jsonMap = objmapper.readValue(outputBody, new TypeReference<Map<String, Object>>() {
         });

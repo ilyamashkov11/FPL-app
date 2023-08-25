@@ -4,7 +4,7 @@ import React from 'react';
 import Navbar from './components/Navbar';
 import InstructionsSidebar from './components/InstructionsSidebar';
 import Searchbar from './components/Searchbar';
-import LeagueTables from './components/LeagueTables';
+import UserInfoContainer from './components/UserInfoContainer';
 
 import './App.css';
 
@@ -14,7 +14,7 @@ function App() {
         <Navbar className="navBar"/>
         <InstructionsSidebar className="InstructionsSidebar"/>
         <Searchbar className="Searchbar"/>
-        <LeagueTables state='true'/>
+        <UserInfoContainer className="UserInfoContainer"/>
       </div>
   );
 }

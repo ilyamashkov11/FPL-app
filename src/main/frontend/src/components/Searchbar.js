@@ -10,7 +10,6 @@ function Searchbar() {
   const [results, setResults] = useState([]);
   const {renderState} = useSelector((state) => state.renderState)
   const dispatch = useDispatch()
-  console.log(renderState)
 
   const handleChange = (value) => {
     setInput(value)
