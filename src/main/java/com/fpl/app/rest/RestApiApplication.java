@@ -58,11 +58,8 @@ public class RestApiApplication {
      */
     public static void main(String[] args) throws IOException, SQLException, ClassNotFoundException {
         // populateUsersTable();
-
         SpringApplication.run(RestApiApplication.class, args);
-
         // clearTable();
-
     }
 
     public static void populateUsersTable(String entry) throws SQLException, ClassNotFoundException, IOException {
@@ -111,6 +108,9 @@ public class RestApiApplication {
 
             while (result.next()) {
                 String teamname = result.getString("team_name");
+                // int entry_id = result.getInt("entry_id");
+                // String name = result.getString("first_name") + " " + result.getString("last_name");
+                // String[] s = {teamname, String.valueOf(entry_id), name};
                 teamNames.add(teamname);
             }
             return teamNames.toArray(new String[teamNames.size()]);

@@ -48,7 +48,13 @@ function Searchbar() {
       <div className="resultsContainer">
         <div className="mainResultText">Team Name</div>
         <div className="results">
-          {results.data && results.data.map((teamname, index) => (<div key={index}>{teamname.replace(/^"|"$/g, '')}</div>))}
+          {results.data && results.data.map((teamname, index) => (
+            <div 
+              className="res" 
+              onClick={(e) => alert("clicked on " + teamname)}
+              key={index}>
+                {teamname.replace(/^"|"$/g, '')}
+            </div>))}
         </div>
       </div>
     </div>
