@@ -7,16 +7,30 @@ import './LeaguesTable.css'
 
 function LeaguesTable(state) {
   const {renderState} = useSelector((state) => state.renderState)
-  const [apiResponse, setApiresponse] = useState([{"leagueName":"TestLeague","leagueRank":"1"},{"leagueName":"test1","leagueRank":"10"}])
+  const [apiResponse, setApiresponse] = useState([])
+  const teamName = useSelector((state) => state.name.teamName)
 
-  async function fetchData() {
-    await callAPI('/api/player/leagues', 'GET', null)
+  // async function fetchData() {
+  //   await callAPI('/api/player/leagues', 'GET', null)
+  //   .then((response) => {
+  //     setApiresponse(response);
+  //     // console.log(response)
+  //     return response
+  //   })
+  // }
+
+  async function fetchData(value) {
+    await callAPI('/api/player/leagues', 'POST', value)
     .then((response) => {
       setApiresponse(response);
       // console.log(response)
       return response
     })
   }
+
+  useEffect(() => {
+    fetchData(teamName);
+  }, []);
 
   const data = useMemo(() => apiResponse || [], [])
   const columns = useMemo(() => [
@@ -30,9 +44,7 @@ function LeaguesTable(state) {
     }
   ], [])
 
-  useEffect(() => {
-    fetchData();
-  }, []);
+ 
   
   // console.log('apiResponse' + apiResponse)
   const {headerGroups, rows, getTableProps, getTableBodyProps, prepareRow} = useTable({ columns, data: apiResponse || [apiResponse] });

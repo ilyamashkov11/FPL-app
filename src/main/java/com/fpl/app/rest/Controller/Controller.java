@@ -40,26 +40,12 @@ public class Controller {
         return jsonObj.toString();
     }
 
-    @GetMapping("/api/player/leagues")
-    public String getPlayerLeagues() throws JsonProcessingException {
-        // List<String[]> list = new ArrayList<>();
-        // JSONObject jsonObj = new JSONObject();
-        // String[] s = new String[2];
-        // s[0] = "TestLeague";
-        // s[1] = "1";
-        // String[] s1 = new String[2];
-        // s1[0] = "wow";
-        // s1[1] = "2";
-        // list.add(s);
-        // list.add(s1);
-        // jsonObj.put("data", list);
-        // System.out.println(jsonObj.toString());
-
-        // String string = RestApiApplication.convertToReadableJSON(jsonObj.toString());
-        // System.out.println(string);
-        // list.add(s);
-
+    @PostMapping("/api/player/leagues")
+    public String getPlayerLeagues(@RequestBody String requestBody) throws JsonProcessingException {
+        if (requestBody.isBlank()) { return "";}
         ObjectMapper objectMapper = new ObjectMapper();
+        String formatted = requestBody.replace("\"", "").toLowerCase();
+
         List<PlayerLeague> list = new ArrayList<>();
         PlayerLeague league = new PlayerLeague("OMG I DID IT", "1");
         PlayerLeague league1 = new PlayerLeague("test1", "10");   

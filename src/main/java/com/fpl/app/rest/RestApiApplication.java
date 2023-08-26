@@ -5,11 +5,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -62,91 +62,6 @@ public class RestApiApplication {
         // clearTable();
     }
 
-    public static void populateUsersTable(String entry) throws SQLException, ClassNotFoundException, IOException {
-        try (Connection connection = ConnectionPoolManager.getDataSource().getConnection()) {
-            String sql = "INSERT INTO Users (entry_id, first_name, last_name, team_name) VALUES (?, ?, ?, ?)";
-            try {
-                Player p = getPlayer(Integer.valueOf(entry), "id", "player_first_name", "player_last_name", "name");
-                String entry1 = p.getEntry();
-                String firstName = p.getFirstName();
-                String lastName = p.getLastName();
-                String teamName = p.getTeamName();
-                PreparedStatement preparedStatement = connection.prepareStatement(sql);
-                preparedStatement.setString(1, entry1);
-                preparedStatement.setString(2, firstName);
-                preparedStatement.setString(3, lastName);
-                preparedStatement.setString(4, teamName);
-                int rowsAffected = preparedStatement.executeUpdate();
-                System.out.println(rowsAffected + " row(s) inserted.");
-            } catch (JsonProcessingException jp) {
-                jp.printStackTrace();
-            }
-
-        }
-    }
-
-    public static void clearTable() throws SQLException {
-        try (Connection connection = ConnectionPoolManager.getDataSource().getConnection()) {
-            String deleteQuery = "DELETE FROM Users";
-            PreparedStatement preparedStatement = connection.prepareStatement(deleteQuery);
-            int rowsDeleted = preparedStatement.executeUpdate(deleteQuery);
-            System.out.println(rowsDeleted + " rows deleted.");
-        }
-
-    }
-
-    public static String[] findTeamNameInDB(String input) throws SQLException, ClassNotFoundException, IOException {
-        System.out.println(input);
-        ArrayList<String> teamNames = new ArrayList<>();
-        try (Connection connection = ConnectionPoolManager.getDataSource().getConnection()) {
-            String sql = "SELECT * FROM Users WHERE team_name LIKE ?";
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            // preparedStatement.setString(1, "\"" + input + "\"");  
-            preparedStatement.setString(1, "%" + input + "%");
-
-            ResultSet result = preparedStatement.executeQuery();
-
-            while (result.next()) {
-                String teamname = result.getString("team_name");
-                // int entry_id = result.getInt("entry_id");
-                // String name = result.getString("first_name") + " " + result.getString("last_name");
-                // String[] s = {teamname, String.valueOf(entry_id), name};
-                teamNames.add(teamname);
-            }
-            return teamNames.toArray(new String[teamNames.size()]);
-        }
-    }
-
-    public static String[] findIDinDB(String input) throws SQLException, ClassNotFoundException, IOException {
-        String[] output = new String[1];
-        try (Connection connection = ConnectionPoolManager.getDataSource().getConnection()) {
-            String sqlSelect = "SELECT * FROM Users WHERE entry_id = ?";
-            PreparedStatement preparedStatement = connection.prepareStatement(sqlSelect);
-            preparedStatement.setString(1, input);
-            ResultSet result = preparedStatement.executeQuery();
-
-            if (result.next()) {
-                String entry_id = result.getString("entry_id");
-                output[0] = entry_id;
-                return output;
-            } else {
-                populateUsersTable(input);
-                return output;
-            }
-        }
-    }
-
-    public static Boolean containsAnyLetters(String input) {
-        for (int i = 0; i < input.length(); i++) {
-            char c = input.toCharArray()[i];
-            if (Character.isLetter(c) && !Character.isWhitespace(c)) {
-                return true;
-            }
-        }
-        return false;
-    }
-    // endregion
-
     // region CONNECTING AND SENDING GET REQUESTS TO APIS
     /**
      * Creates an HTTP client and sends a GET request to a provided API endpoint
@@ -193,7 +108,7 @@ public class RestApiApplication {
     }
     // endregion
 
-    // region TRANSFORMING THE RESPONSES INTO HUMAN READABLE TEXT
+    // region UTIL METHODS
     /**
      * A method to convert the output JSON formatted String, obtained from the GET
      * request, into a human readeable JSON. This returns the entire JSON object as
@@ -237,6 +152,48 @@ public class RestApiApplication {
         }
         return strings;
     }
+
+    public static void populateUsersTable(String entry) throws SQLException, ClassNotFoundException, IOException {
+        try (Connection connection = ConnectionPoolManager.getDataSource().getConnection()) {
+            String sql = "INSERT INTO Users (entry_id, first_name, last_name, team_name) VALUES (?, ?, ?, ?)";
+            try {
+                Player p = getPlayer(Integer.valueOf(entry), "id", "player_first_name", "player_last_name", "name");
+                String entry1 = p.getEntry();
+                String firstName = p.getFirstName();
+                String lastName = p.getLastName();
+                String teamName = p.getTeamName();
+                PreparedStatement preparedStatement = connection.prepareStatement(sql);
+                preparedStatement.setString(1, entry1);
+                preparedStatement.setString(2, firstName);
+                preparedStatement.setString(3, lastName);
+                preparedStatement.setString(4, teamName);
+                int rowsAffected = preparedStatement.executeUpdate();
+                System.out.println(rowsAffected + " row(s) inserted.");
+            } catch (JsonProcessingException jp) {
+                jp.printStackTrace();
+            }
+
+        }
+    }
+
+    public static void clearTable() throws SQLException {
+        try (Connection connection = ConnectionPoolManager.getDataSource().getConnection()) {
+            String deleteQuery = "DELETE FROM Users";
+            PreparedStatement preparedStatement = connection.prepareStatement(deleteQuery);
+            int rowsDeleted = preparedStatement.executeUpdate(deleteQuery);
+            System.out.println(rowsDeleted + " rows deleted.");
+        }
+    }
+
+    public static Boolean containsAnyLetters(String input) {
+        for (int i = 0; i < input.length(); i++) {
+            char c = input.toCharArray()[i];
+            if (Character.isLetter(c) && !Character.isWhitespace(c)) {
+                return true;
+            }
+        }
+        return false;
+    }
     // endregion
 
     // region DATA PROCESSING
@@ -276,7 +233,7 @@ public class RestApiApplication {
     }
     // endregion
 
-    // region METHOD TO BE USED BY FRONTEND
+    // region API METHODS
     /*
      * METHODS TO BE USED BY FRONTEND
      */
@@ -288,6 +245,59 @@ public class RestApiApplication {
             s[i] = league_info.get(i).toString();
         }
         return s;
+    }
+
+    public static String[] findIDinDB(String input) throws SQLException, ClassNotFoundException, IOException {
+        String[] output = new String[1];
+        try (Connection connection = ConnectionPoolManager.getDataSource().getConnection()) {
+            String sqlSelect = "SELECT * FROM Users WHERE entry_id = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(sqlSelect);
+            preparedStatement.setString(1, input);
+            ResultSet result = preparedStatement.executeQuery();
+
+            if (result.next()) {
+                String entry_id = result.getString("entry_id");
+                output[0] = entry_id;
+                return output;
+            } else {
+                populateUsersTable(input);
+                return output;
+            }
+        }
+    }
+
+    public static String[] findTeamNameInDB(String input) throws SQLException, ClassNotFoundException, IOException {
+        System.out.println(input);
+        ArrayList<String> teamNames = new ArrayList<>();
+        try (Connection connection = ConnectionPoolManager.getDataSource().getConnection()) {
+            String sql = "SELECT * FROM Users WHERE team_name LIKE ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            // preparedStatement.setString(1, "\"" + input + "\"");  
+            preparedStatement.setString(1, "%" + input + "%");
+
+            ResultSet result = preparedStatement.executeQuery();
+
+            while (result.next()) {
+                String teamname = result.getString("team_name");
+                teamNames.add(teamname);
+            }
+            return teamNames.toArray(new String[teamNames.size()]);
+        }
+    }
+
+    public static List<PlayerLeague> getUserLeagues(String teamName) throws SQLException, NumberFormatException, IOException {
+        try (Connection connection = ConnectionPoolManager.getDataSource().getConnection()) {
+            String sqlSelect = "SELECT * FROM Users WHERE team_name = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(sqlSelect);
+            preparedStatement.setString(1, teamName);
+            ResultSet result = preparedStatement.executeQuery();
+            if (result.next()) {
+                // String user_entry = 
+            }
+
+            Player p = getPlayer(Integer.valueOf("1"), "id", "player_first_name", "player_last_name", "name");
+        }
+        return null;
     }
     // endregion
 
