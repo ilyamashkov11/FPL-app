@@ -5,10 +5,13 @@ import "./Searchbar.css";
 import { useDispatch, useSelector } from "react-redux";
 import { setTrue } from "./redux/State";
 import { setName } from "./redux/TeamNameReducer";
+import { setID } from './redux/UserIDReducer'
 
 function Searchbar() {
   const [input, setInput] = useState("");
   const [results, setResults] = useState([]);
+  const [ids, setIds] = useState([])
+  // const [id, setId] = useState()
   const {renderState} = useSelector((state) => state.renderState)
   const dispatch = useDispatch()
 
@@ -18,7 +21,12 @@ function Searchbar() {
     if (hasChars(value)) {
       if (value.trim() !=="") {
         callAPI('/api/search', 'POST', value)
-        .then(response => {setResults(response)})
+        .then(response => {
+          const ids = response.map((user) => user[0])
+          const teamNames = response.map((user) => user[1])
+          setResults(teamNames)
+          setIds(ids)
+        })
       }
     }
   }
@@ -55,9 +63,9 @@ function Searchbar() {
         />
       </div>
       <div className="resultsContainer">
-        <div className="mainResultText">Team Name</div>
+        <div className="mainResultText">Team Name - ID</div>
         <div className="results">
-          {results.data && results.data.map((teamname, index) => (
+          {results && results.map((teamname, index) => (
             <div 
               className="res" 
               onClick={(e) => {
@@ -65,10 +73,11 @@ function Searchbar() {
                 dispatch(setTrue())
                 clearInput()
                 setResults([])
+                dispatch(setID(ids[index]))
                 }}
               key={index}
               >
-                {teamname.replace(/^"|"$/g, '')}
+                {teamname.replace(/^"|"$/g, '')} - {ids[index]}
             </div>))}
         </div>
       </div>

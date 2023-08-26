@@ -1,8 +1,4 @@
 .leaguesTableContainer {
-    /* position: relative;
-    overflow-y: scroll;
-    font-weight: bold;
-    color: black; */
     width: 25%;
     padding-top: 50px;
     padding-left: 50px;
@@ -12,9 +8,9 @@
   table {
     left: 5%;
     width: 300px;
-    /* height: 300px; */
     border-collapse: collapse;
     overflow: hidden;
+    text-align: left;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
   }
   th,

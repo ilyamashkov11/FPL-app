@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fpl.app.rest.PlayerLeague;
 import com.fpl.app.rest.RestApiApplication;
@@ -34,43 +35,25 @@ public class Controller {
     public String search(@RequestBody String requestBody) throws IOException, SQLException, ClassNotFoundException {
         if (requestBody.isBlank()) { return "";}
         String formatted = requestBody.replace("\"", "").toLowerCase(); // strings in requestbody have double quotes for some reason
-        String toReturn[] = RestApiApplication.containsAnyLetters(formatted) ? RestApiApplication.findTeamNameInDB(formatted) : RestApiApplication.findIDinDB(formatted);
-        JSONObject jsonObj = new JSONObject();
-        jsonObj.put("data", toReturn);
-        return jsonObj.toString();
+        String toReturn[][] = RestApiApplication.containsAnyLetters(formatted) ? RestApiApplication.findTeamNameInDB(formatted) : RestApiApplication.findIDinDB(formatted);
+        ObjectMapper objectMapper = new ObjectMapper();
+        String json = objectMapper.writeValueAsString(toReturn);
+        return json;
     }
 
     @PostMapping("/api/player/leagues")
-    public String getPlayerLeagues(@RequestBody String requestBody) throws JsonProcessingException {
-        if (requestBody.isBlank()) { return "";}
+    public String getPlayerLeagues(@RequestBody String requestBody) throws SQLException, IOException {
         ObjectMapper objectMapper = new ObjectMapper();
-        String formatted = requestBody.replace("\"", "").toLowerCase();
+        if (requestBody.isBlank()) { return "was enpty";}
+        // System.out.println(requestBody);
+        JsonNode jsonNode = objectMapper.readTree(requestBody);
 
-        List<PlayerLeague> list = new ArrayList<>();
-        PlayerLeague league = new PlayerLeague("OMG I DID IT", "1");
-        PlayerLeague league1 = new PlayerLeague("test1", "10");   
-        PlayerLeague league2 = new PlayerLeague("test2", "10");
-        PlayerLeague league3 = new PlayerLeague("test3", "10");       
-        PlayerLeague league4 = new PlayerLeague("test3", "10");
-        PlayerLeague league5 = new PlayerLeague("test3", "10");
-        PlayerLeague league6 = new PlayerLeague("test3", "10");
-        PlayerLeague league7 = new PlayerLeague("test3", "10");
+        String teamName = jsonNode.get("value").asText();
+        String user_id = jsonNode.get("user_id").asText();
 
-
-        list.add(league);
-        list.add(league1);
-        list.add(league2);
-        list.add(league3);        
-        list.add(league4);
-        list.add(league5);
-        list.add(league6);        
-        list.add(league7);        list.add(league6);
-        list.add(league6);
-
-
+        List<PlayerLeague> list = RestApiApplication.getUserLeagues(teamName, user_id, objectMapper);
 
         String jsonString = objectMapper.writeValueAsString(list);
-        System.out.println(jsonString);
         return jsonString;
     }
 }

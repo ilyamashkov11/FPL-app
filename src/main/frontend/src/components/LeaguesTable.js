@@ -9,28 +9,20 @@ function LeaguesTable(state) {
   const {renderState} = useSelector((state) => state.renderState)
   const [apiResponse, setApiresponse] = useState([])
   const teamName = useSelector((state) => state.name.teamName)
-
-  // async function fetchData() {
-  //   await callAPI('/api/player/leagues', 'GET', null)
-  //   .then((response) => {
-  //     setApiresponse(response);
-  //     // console.log(response)
-  //     return response
-  //   })
-  // }
+  const user_id = useSelector((state) => state.userID.userID)
 
   async function fetchData(value) {
-    await callAPI('/api/player/leagues', 'POST', value)
+    console.log(user_id)
+    await callAPI('/api/player/leagues', 'POST', {value, user_id})
     .then((response) => {
       setApiresponse(response);
-      // console.log(response)
       return response
     })
   }
 
   useEffect(() => {
     fetchData(teamName);
-  }, []);
+  }, [user_id]);
 
   const data = useMemo(() => apiResponse || [], [])
   const columns = useMemo(() => [

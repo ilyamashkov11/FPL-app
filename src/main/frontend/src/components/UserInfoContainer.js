@@ -3,7 +3,6 @@ import LeaguesTable from './LeaguesTable'
 import './UserInfoContainer.css'
 
 function UserInfoContainer({teamName, renderState}) {
-    console.log('in useinfocontainer '+ renderState)
     if (renderState){
         return (
             <div className='userInfoContainer'>

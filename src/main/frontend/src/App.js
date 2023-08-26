@@ -13,9 +13,8 @@ import './App.css';
 function App() {
   const {renderState} = useSelector((state) => state.renderState)
   const teamName = useSelector((state) => state.name.teamName)
+  
   const dispatch = useDispatch()
-  // console.log({teamName})
-  console.log('in APP '+renderState)
   
   return (
       <div className="App">

@@ -59,6 +59,8 @@ public class RestApiApplication {
     public static void main(String[] args) throws IOException, SQLException, ClassNotFoundException {
         // populateUsersTable();
         SpringApplication.run(RestApiApplication.class, args);
+        // findTeamNameInDB("the");
+        // findIDinDB("7");
         // clearTable();
     }
 
@@ -209,8 +211,7 @@ public class RestApiApplication {
      */
     public static ArrayList<Player> getLeagueRanking(String... keyNames) throws JsonProcessingException {
         ObjectMapper objmapper = new ObjectMapper();
-        Map<String, Object> jsonMap1 = objmapper.readValue(keyNames[0], new TypeReference<Map<String, Object>>() {
-        });
+        Map<String, Object> jsonMap1 = objmapper.readValue(keyNames[0], new TypeReference<Map<String, Object>>() {});
         ArrayList<Player> players = new ArrayList<>();
 
         String results_all_info = objmapper.writeValueAsString(jsonMap1.get("results"));
@@ -221,7 +222,8 @@ public class RestApiApplication {
             int score_this_gw = node.get("event_total").asInt();
             String player_name = node.get("player_name").asText();
             String rank_in_league = node.get("rank_sort").asText();
-            players.add(new Player(entry, player_name, rank_in_league, total_score, score_this_gw));
+            String leagues = node.get("leagues").asText();
+            players.add(new Player(entry, player_name, rank_in_league, total_score, score_this_gw, leagues));
         }
         return players;
     }
@@ -247,8 +249,8 @@ public class RestApiApplication {
         return s;
     }
 
-    public static String[] findIDinDB(String input) throws SQLException, ClassNotFoundException, IOException {
-        String[] output = new String[1];
+    public static String[][] findIDinDB(String input) throws SQLException, ClassNotFoundException, IOException {
+        String[][] output = new String[1][2];
         try (Connection connection = ConnectionPoolManager.getDataSource().getConnection()) {
             String sqlSelect = "SELECT * FROM Users WHERE entry_id = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(sqlSelect);
@@ -257,7 +259,10 @@ public class RestApiApplication {
 
             if (result.next()) {
                 String entry_id = result.getString("entry_id");
-                output[0] = entry_id;
+                String team_name = result.getString("team_name");
+                output[0][0] = entry_id;
+                output[0][1] = team_name;
+                System.out.println(output[0][0] +" "+ output[0][1]);
                 return output;
             } else {
                 populateUsersTable(input);
@@ -266,9 +271,9 @@ public class RestApiApplication {
         }
     }
 
-    public static String[] findTeamNameInDB(String input) throws SQLException, ClassNotFoundException, IOException {
+    public static String[][] findTeamNameInDB(String input) throws SQLException, ClassNotFoundException, IOException {
         System.out.println(input);
-        ArrayList<String> teamNames = new ArrayList<>();
+        ArrayList<String[]> teamNames = new ArrayList<>();
         try (Connection connection = ConnectionPoolManager.getDataSource().getConnection()) {
             String sql = "SELECT * FROM Users WHERE team_name LIKE ?";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
@@ -279,25 +284,33 @@ public class RestApiApplication {
 
             while (result.next()) {
                 String teamname = result.getString("team_name");
-                teamNames.add(teamname);
+                String entry_id = result.getString("entry_id");
+                String[] teamNameAndID = new String[2];
+                teamNameAndID[0] = entry_id;
+                teamNameAndID[1] = teamname;
+                teamNames.add(teamNameAndID);
             }
-            return teamNames.toArray(new String[teamNames.size()]);
+            return teamNames.toArray(new String[teamNames.size()][2]);
         }
     }
 
-    public static List<PlayerLeague> getUserLeagues(String teamName) throws SQLException, NumberFormatException, IOException {
-        try (Connection connection = ConnectionPoolManager.getDataSource().getConnection()) {
-            String sqlSelect = "SELECT * FROM Users WHERE team_name = ?";
-            PreparedStatement preparedStatement = connection.prepareStatement(sqlSelect);
-            preparedStatement.setString(1, teamName);
-            ResultSet result = preparedStatement.executeQuery();
-            if (result.next()) {
-                // String user_entry = 
-            }
+    public static List<PlayerLeague> getUserLeagues(String teamName, String user_id, ObjectMapper objmapper) throws SQLException, NumberFormatException, IOException {
 
-            Player p = getPlayer(Integer.valueOf("1"), "id", "player_first_name", "player_last_name", "name");
+         String[] result = connectToAPI(manager_url + String.valueOf(user_id), "leagues");
+        Map<String, Object> jsonMap = objmapper.readValue(result[0], new TypeReference<Map<String, Object>>() {});
+        ArrayList<PlayerLeague> leagues = new ArrayList<>();
+
+        String results_all_info = objmapper.writeValueAsString(jsonMap.get("classic"));
+        System.out.println(results_all_info);
+        JsonNode root = objmapper.readTree(results_all_info);
+        for (JsonNode node : root) {
+            String name = node.get("name").asText();
+            String position = node.get("entry_rank").asText();
+            PlayerLeague league = new PlayerLeague(name, position);
+            leagues.add(league);
         }
-        return null;
+        
+        return leagues;
     }
     // endregion
 

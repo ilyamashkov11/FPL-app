@@ -10,6 +10,7 @@ public class Player {
     String first_name;
     String last_name;
     String team_name;
+    String leagues;
 
     public Player(String entry_id, String first_name, String last_name, String team_name) {
         this.entry = entry_id;
@@ -17,12 +18,15 @@ public class Player {
         this.last_name = last_name;
         this.team_name = team_name;
     }
-    public Player(int entry, String name, String leagueRank, int total, int scoreThisWeek){
+
+    // general player info
+    public Player(int entry, String name, String leagueRank, int total, int scoreThisWeek, String leagues) {
         this.entry = String.valueOf(entry);
         this.fullName = name;
         this.leagueRank = leagueRank;
         this.totalScore = total;
         this.scoreThisWeek = scoreThisWeek;
+        this.leagues = leagues;
     }
 
     public String getEntry() {return this.entry;}    
@@ -32,7 +36,9 @@ public class Player {
     public String getTeamName() {return this.team_name;}
     public String getLeagueRank() {return this.leagueRank;}
     public int getTotal() {return this.totalScore;}
-    public int getThisWeekScore() {return this.scoreThisWeek;}
+    public int getThisWeekScore() {return this.scoreThisWeek;}   
+    public String getLeagues() {return this.leagues;}
+
 
 
 
