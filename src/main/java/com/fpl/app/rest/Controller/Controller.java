@@ -61,10 +61,28 @@ public class Controller {
 
         ObjectMapper objectMapper = new ObjectMapper();
         List<PlayerLeague> list = new ArrayList<>();
-        PlayerLeague league = new PlayerLeague("OMG IT WORKS", "1");
-        PlayerLeague league1 = new PlayerLeague("test1", "10");
+        PlayerLeague league = new PlayerLeague("OMG I DID IT", "1");
+        PlayerLeague league1 = new PlayerLeague("test1", "10");   
+        PlayerLeague league2 = new PlayerLeague("test2", "10");
+        PlayerLeague league3 = new PlayerLeague("test3", "10");       
+        PlayerLeague league4 = new PlayerLeague("test3", "10");
+        PlayerLeague league5 = new PlayerLeague("test3", "10");
+        PlayerLeague league6 = new PlayerLeague("test3", "10");
+        PlayerLeague league7 = new PlayerLeague("test3", "10");
+
+
         list.add(league);
         list.add(league1);
+        list.add(league2);
+        list.add(league3);        
+        list.add(league4);
+        list.add(league5);
+        list.add(league6);        
+        list.add(league7);        list.add(league6);
+        list.add(league6);
+
+
+
         String jsonString = objectMapper.writeValueAsString(list);
         System.out.println(jsonString);
         return jsonString;

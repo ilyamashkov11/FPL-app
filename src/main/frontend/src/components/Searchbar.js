@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FaSearch } from "react-icons/fa";
 import callAPI from "./callAPI";
 import "./Searchbar.css";
 import { useDispatch, useSelector } from "react-redux";
 import { setTrue } from "./redux/State";
+import { setName } from "./redux/TeamNameReducer";
 
 function Searchbar() {
   const [input, setInput] = useState("");
@@ -36,6 +37,10 @@ function Searchbar() {
     return /[^\d]/.test(input)
   }
 
+  const clearInput = () => {
+    setInput('')
+  }
+
   return (
     <div className="container">
       <div className="bar">
@@ -55,8 +60,14 @@ function Searchbar() {
           {results.data && results.data.map((teamname, index) => (
             <div 
               className="res" 
-              onClick={(e) => dispatch(setTrue())}
-              key={index}>
+              onClick={(e) => {
+                dispatch(setName(teamname.replace(/^"|"$/g, '')))
+                dispatch(setTrue())
+                clearInput()
+                setResults([])
+                }}
+              key={index}
+              >
                 {teamname.replace(/^"|"$/g, '')}
             </div>))}
         </div>

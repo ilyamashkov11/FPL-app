@@ -34,12 +34,11 @@ function LeaguesTable(state) {
     fetchData();
   }, []);
   
-  console.log('apiResponse' + apiResponse)
-  const {headerGroups, rows, getTableProps, getTableBodyProps, prepareRow} = useTable({ columns, data: apiResponse || [] });
+  // console.log('apiResponse' + apiResponse)
+  const {headerGroups, rows, getTableProps, getTableBodyProps, prepareRow} = useTable({ columns, data: apiResponse || [apiResponse] });
 
   return (
     <div className="leaguesTableContainer">
-    {/* <button onClick={fetchData}>clickmeeee</button> */}
     <table {...getTableProps()}>
       <thead>
         {headerGroups.map((headerGroup) => (

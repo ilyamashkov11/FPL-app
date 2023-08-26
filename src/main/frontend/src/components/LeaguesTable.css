@@ -1,17 +1,18 @@
 .leaguesTableContainer {
-    position: fixed;
-    top: 50%;
-    left: 5%;
-    top: 60%;
-    max-height: 300px;
+    /* position: relative;
     overflow-y: scroll;
     font-weight: bold;
-    color: black;
-    
+    color: black; */
+    width: 25%;
+    padding-top: 40px;
+    padding-left: 50px;
+    margin-bottom: 30px;
   }
+
   table {
+    left: 5%;
     width: 300px;
-    height: 300px;
+    /* height: 300px; */
     border-collapse: collapse;
     overflow: hidden;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);

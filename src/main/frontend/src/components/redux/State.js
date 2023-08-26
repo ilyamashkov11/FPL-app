@@ -3,11 +3,11 @@ import { createSlice } from "@reduxjs/toolkit"
 export const counterSlice = createSlice({
     name: "renderStateName",
     initialState: {
-        renderState: "false"
+        renderState: false
     },
     reducers: {
-        setTrue: (state) => {state.renderState = "true"},
-        setFalse: (state) => {state.renderState = "false"}
+        setTrue: (state) => {state.renderState = true},
+        setFalse: (state) => {state.renderState = false}
     }
 })
 
