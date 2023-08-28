@@ -155,7 +155,7 @@ public class RestApiApplication {
         return strings;
     }
 
-    public static void populateUsersTable(String entry) throws SQLException, ClassNotFoundException, IOException {
+    public static String[][] populateUsersTable(String entry) throws SQLException, ClassNotFoundException, IOException {
         try (Connection connection = ConnectionPoolManager.getDataSource().getConnection()) {
             String sql = "INSERT INTO Users (entry_id, first_name, last_name, team_name) VALUES (?, ?, ?, ?)";
             try {
@@ -171,10 +171,27 @@ public class RestApiApplication {
                 preparedStatement.setString(4, teamName);
                 int rowsAffected = preparedStatement.executeUpdate();
                 System.out.println(rowsAffected + " row(s) inserted.");
+
+                System.out.println("ENTRY VALUE: " + entry);
+                String sql2 = "SELECT * FROM Users WHERE entry_id = ?";
+                PreparedStatement preparedStatement2 = connection.prepareStatement(sql2);
+                preparedStatement2.setString(1, entry1);
+                ResultSet result = preparedStatement2.executeQuery();
+                String[][] output = new String[1][2];
+
+                if (result.next()) {
+                    String entry_id = result.getString("entry_id");
+                    String team_name = result.getString("team_name");
+                    output[0][0] = entry_id;
+                    output[0][1] = team_name;
+                    System.out.println(output[0][0] +" "+ output[0][1]);
+                    return output;
+                } 
             } catch (JsonProcessingException jp) {
                 jp.printStackTrace();
             }
-
+            System.out.println("RETURNED NULL");
+            return null;
         }
     }
 
@@ -265,8 +282,12 @@ public class RestApiApplication {
                 System.out.println(output[0][0] +" "+ output[0][1]);
                 return output;
             } else {
-                populateUsersTable(input);
-                return output;
+                return populateUsersTable(input);
+                // String sqlSelectAgain = "SELECT * FROM Users WHERE entry_id = ?";
+                // PreparedStatement preparedStatement = connection.prepareStatement(sqlSelect);
+                // preparedStatement.setString(1, input);
+                // ResultSet result = preparedStatement.executeQuery();
+                // return output;
             }
         }
     }
@@ -297,18 +318,20 @@ public class RestApiApplication {
     public static List<PlayerLeague> getUserLeagues(String teamName, String user_id, ObjectMapper objmapper) throws SQLException, NumberFormatException, IOException {
 
          String[] result = connectToAPI(manager_url + String.valueOf(user_id), "leagues");
+         System.out.println("GetUserLeagues: " + result[0]);
         Map<String, Object> jsonMap = objmapper.readValue(result[0], new TypeReference<Map<String, Object>>() {});
         ArrayList<PlayerLeague> leagues = new ArrayList<>();
+        // if(jsonMap != null) {
+            String results_all_info = objmapper.writeValueAsString(jsonMap.get("classic")); //! ERROR WHEN TRYING TO GET SOMEONES TEAM VIA ID, IT SAYS JSONMAP IS NULL
+            JsonNode root = objmapper.readTree(results_all_info);
+            for (JsonNode node : root) {
+                String name = node.get("name").asText();
+                String position = node.get("entry_rank").asText();
+                PlayerLeague league = new PlayerLeague(name, position);
+                leagues.add(league);
+            }
 
-        String results_all_info = objmapper.writeValueAsString(jsonMap.get("classic"));
-        System.out.println(results_all_info);
-        JsonNode root = objmapper.readTree(results_all_info);
-        for (JsonNode node : root) {
-            String name = node.get("name").asText();
-            String position = node.get("entry_rank").asText();
-            PlayerLeague league = new PlayerLeague(name, position);
-            leagues.add(league);
-        }
+        // }
         
         return leagues;
     }

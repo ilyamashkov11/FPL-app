@@ -43,17 +43,42 @@ public class Controller {
 
     @PostMapping("/api/player/leagues")
     public String getPlayerLeagues(@RequestBody String requestBody) throws SQLException, IOException {
+        System.out.println("\n================ API CONNECTED ==============\n");
         ObjectMapper objectMapper = new ObjectMapper();
         if (requestBody.isBlank()) { return "was enpty";}
-        // System.out.println(requestBody);
-        JsonNode jsonNode = objectMapper.readTree(requestBody);
+        if (!requestBody.contains("[")) {
+            // System.out.println("requestBody: "+requestBody);
+            JsonNode jsonNode = objectMapper.readTree(requestBody);
+            
+            String teamName = jsonNode.get("value").asText();
+            String user_id = jsonNode.get("user_id").asText();
+            
+            List<PlayerLeague> list = RestApiApplication.getUserLeagues(teamName, user_id, objectMapper);
+            
+            String jsonString = objectMapper.writeValueAsString(list);
+            return jsonString;
+        } else {
+            String[][] inputArray = new ObjectMapper().readValue(requestBody, String[][].class);
+            String user_id = inputArray[0][0];
+            String value = inputArray[0][1].replaceAll("^\"|\"$", "");
+            System.out.println("user id: " + user_id + " \nvalue: " + value);
 
-        String teamName = jsonNode.get("value").asText();
-        String user_id = jsonNode.get("user_id").asText();
-
-        List<PlayerLeague> list = RestApiApplication.getUserLeagues(teamName, user_id, objectMapper);
-
-        String jsonString = objectMapper.writeValueAsString(list);
-        return jsonString;
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("user_id", user_id);
+            jsonObject.put("value", value);
+            
+            String newRequestBody = jsonObject.toString();
+            System.out.println("new request body: " + newRequestBody);
+            JsonNode jsonNode = objectMapper.readTree(newRequestBody);
+            
+            String teamName1 = jsonNode.get("value").asText();
+            String user_id1 = jsonNode.get("user_id").asText();
+            
+            List<PlayerLeague> list = RestApiApplication.getUserLeagues(teamName1, user_id1, objectMapper);
+            System.out.println("the leagues" + list.toString());
+            
+            String jsonString = objectMapper.writeValueAsString(list);
+            return jsonString;
+        }
     }
 }

@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setTrue } from "./redux/State";
 import { setName } from "./redux/TeamNameReducer";
 import { setID } from './redux/UserIDReducer'
+import { getLeagues, setLeagues } from "./redux/PlayerLeaguesReducer";
 
 function Searchbar() {
   const [input, setInput] = useState("");
@@ -22,6 +23,7 @@ function Searchbar() {
       if (value.trim() !=="") {
         callAPI('/api/search', 'POST', value)
         .then(response => {
+          // console.log(response)
           const ids = response.map((user) => user[0])
           const teamNames = response.map((user) => user[1])
           setResults(teamNames)
@@ -33,11 +35,26 @@ function Searchbar() {
 
   const handleKeyPress = async (event, value) => {
     if (event.key === "Enter") {
+      console.log('1 - PRESSED ENTER KEY')
       if (value.trim() !=="") {
         const response = await callAPI('/api/search', 'POST', value)
-        console.log(response)
+        console.log("2 - RESPONSE FROM /SEARCH: " + response)
+        console.log("3 - TEAM NAME: " + response[0][1])
+        await callAPI('/api/player/leagues', 'POST', response)
+        .then(response1 => {
+          console.log("4 - RESPONSE FROM /LEAGUES: " + response1)
+          console.log('5 - SETTING LEAGUES, ID, render = TRUE, TEAM NAME')
+          dispatch(setLeagues(response1))
+          dispatch(setID(response[0][0]))
+          dispatch(setName(response[0][1].replace(/"/g, '')))
+          dispatch(setTrue())
+          // const teamNames = response1.map((user) => user[1])
+          // setResults(teamNames)
+          // setIds(ids)
+        })
       }
-      setInput("")
+      console.log('6 - CLEARING INPUT FROM SEARCH BAR')
+      clearInput()
     }
   }
 
@@ -69,11 +86,14 @@ function Searchbar() {
             <div 
               className="res" 
               onClick={(e) => {
-                dispatch(setName(teamname.replace(/^"|"$/g, '')))
-                dispatch(setTrue())
+                console.log('1 - CLICKED A TEAM NAME')
                 clearInput()
                 setResults([])
+                console.log('2 - SETTING TEAM NAME, ID, render = TRUE')
+                dispatch(setLeagues([]))
+                dispatch(setName(teamname.replace(/^"|"$/g, '')))
                 dispatch(setID(ids[index]))
+                dispatch(setTrue())
                 }}
               key={index}
               >

@@ -2,7 +2,8 @@ import React, {useState, useEffect} from 'react'
 import {useTable} from 'react-table'
 import { useMemo } from 'react'
 import callAPI from './callAPI'
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { setLeagues } from './redux/PlayerLeaguesReducer';
 import './LeaguesTable.css'
 
 function LeaguesTable(state) {
@@ -10,19 +11,46 @@ function LeaguesTable(state) {
   const [apiResponse, setApiresponse] = useState([])
   const teamName = useSelector((state) => state.name.teamName)
   const user_id = useSelector((state) => state.userID.userID)
+  const leagues = useSelector((state) => state.leagues.leagues)
+  const dispatch = useDispatch()
 
   async function fetchData(value) {
-    console.log(user_id)
-    await callAPI('/api/player/leagues', 'POST', {value, user_id})
-    .then((response) => {
-      setApiresponse(response);
-      return response
-    })
+    console.log("9 - INSIDE FETCH DATA")
+    if (leagues !== []) {
+      console.log('10 - CALLS /LEAGUES')
+      await callAPI('/api/player/leagues', 'POST', {value, user_id})
+      .then((response) => {
+        console.log('11 - /LEAGUES RESPONSE: ' + response)
+        console.log("12 - SETS apiResponse, LEAGUES")
+        setApiresponse(response);
+        dispatch(setLeagues(response))
+        // console.log('response ' +response)
+        return response
+      })
+    }
   }
 
   useEffect(() => {
-    fetchData(teamName);
+    console.log("7 - USE EFFECT 1 CALLED BECAUSE LEAGUESTABLE NOW RENDERING OR ID CHANGED")
+    if (leagues === undefined || leagues.length === 0){ //! THERE IS A PROBLEM HERE SOMEWHERE (OR AT LEAST RELATED TO HERE) CURRENTLY WORKS FOR SELECTNG TEAM BUT NOT FOR ENTERING ID (ALTERNATES) LOOK AT THE REDUX DEVTOOLS!!!!
+      console.log('8 - LEAGUES == [], CALLS fetchData()')
+      fetchData(teamName);
+    } else if (leagues !== undefined ) {
+      console.log('8 - LEAGUES != [] SETS apiResponse (apiResponse is what is used in the table)')
+      setApiresponse(leagues)
+    } else {
+      console.log('leagues === []')
+    }
+    // fetchData(teamName)
+    // setApiresponse(leagues)
   }, [user_id]);
+
+  // useEffect(() => {
+  //   console.log("use effect 2: ")
+  //   if (apiResponse.length > 0) {
+  //     dispatch(setLeagues(apiResponse)); // Update leagues in Redux store
+  //   }
+  // }, [apiResponse]);
 
   const data = useMemo(() => apiResponse || [], [])
   const columns = useMemo(() => [
@@ -43,6 +71,7 @@ function LeaguesTable(state) {
 
   return (
     <div className="leaguesTableContainer">
+    {apiResponse.length === 0 ? (<p>Loading Table...</p>) : (
     <table {...getTableProps()}>
       <thead>
         {headerGroups.map((headerGroup) => (
@@ -68,6 +97,7 @@ function LeaguesTable(state) {
         })}
       </tbody>
     </table>
+    )}
   </div>
   )
 }

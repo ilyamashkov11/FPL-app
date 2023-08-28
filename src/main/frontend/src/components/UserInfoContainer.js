@@ -4,6 +4,7 @@ import './UserInfoContainer.css'
 
 function UserInfoContainer({teamName, renderState}) {
     if (renderState){
+        console.log('6 - RENDER SET TO TRUE CAUSES LEAGUESTABLE TO RENDER')
         return (
             <div className='userInfoContainer'>
             <div className='userInfoText'>{teamName}</div>
