@@ -30,7 +30,7 @@ public class RestApiApplication {
     public static final String jdbcUrl = "jdbc:mysql://localhost:3306/FPL-tables";
     public static final String username = "root";
     public static final String password = "Chelsea11";
-    public static Connection connection = null;;
+    public static Connection connection = null;
 
     /*
      * ALL API ENDPOINTS
@@ -43,6 +43,8 @@ public class RestApiApplication {
     // private static String element_url =
     // "https://fantasy.premierleague.com/api/me/";
     private static String manager_url = "https://fantasy.premierleague.com/api/entry/";
+
+    private static String player_image = "https://resources.premierleague.com/premierleague/photos/players/110x140/p"; // + photo attribute from bootstrap-static
 
     // * My personal authentication coookie that can be used to authenticate certain
     // API endpoints */
@@ -322,7 +324,7 @@ public class RestApiApplication {
         Map<String, Object> jsonMap = objmapper.readValue(result[0], new TypeReference<Map<String, Object>>() {});
         ArrayList<PlayerLeague> leagues = new ArrayList<>();
         // if(jsonMap != null) {
-            String results_all_info = objmapper.writeValueAsString(jsonMap.get("classic")); //! ERROR WHEN TRYING TO GET SOMEONES TEAM VIA ID, IT SAYS JSONMAP IS NULL
+            String results_all_info = objmapper.writeValueAsString(jsonMap.get("classic")); 
             JsonNode root = objmapper.readTree(results_all_info);
             for (JsonNode node : root) {
                 String name = node.get("name").asText();
