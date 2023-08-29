@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { FaSearch } from "react-icons/fa";
 import callAPI from "./callAPI";
-import "./Searchbar.css";
+import "./css/Searchbar.css";
 import { useDispatch, useSelector } from "react-redux";
 import { setTrue } from "./redux/State";
 import { setName } from "./redux/TeamNameReducer";

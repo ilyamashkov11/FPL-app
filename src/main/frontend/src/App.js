@@ -21,6 +21,7 @@ function App() {
         <Navbar className="navBar"/>
         <InstructionsSidebar className="InstructionsSidebar"/>
         <Searchbar className="Searchbar"/>
+        <div className='teamNameText'>{teamName}</div>
         <UserInfoContainer className="UserInfoContainer" teamName={teamName} renderState={renderState}/>
       </div>
   );

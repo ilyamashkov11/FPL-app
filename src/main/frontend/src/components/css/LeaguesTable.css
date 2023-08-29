@@ -1,16 +1,21 @@
 .leaguesTableContainer {
     width: 25%;
-    padding-top: 50px;
-    padding-left: 50px;
+    max-width: 328px;
+    /* padding-top: 50px; */
+    /* padding-left: 50px; */
+    top: 50px;
+    left: 50px;
     margin-bottom: 30px;
-    /* position: absolute; */
+    position: relative;
+    display: flex;
     /* max-height: 300px;
     overflow-y: scroll;  */
   }
 
   table {
     left: 5%;
-    width: 300px;
+    width: 350px;
+    max-width: 350px;
     border-collapse: collapse;
     overflow: hidden;
     max-height: 300px;

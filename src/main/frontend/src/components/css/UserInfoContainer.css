@@ -6,12 +6,7 @@
     /* height: 50%; */
     width: 100%;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     /* overflow: auto; */
-}
-
-.userInfoText {
-    font-weight: bold;
-    font-size: 50px;
 }
 

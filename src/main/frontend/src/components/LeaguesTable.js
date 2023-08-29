@@ -4,7 +4,7 @@ import { useMemo } from 'react'
 import callAPI from './callAPI'
 import { useSelector, useDispatch } from "react-redux";
 import { setLeagues } from './redux/PlayerLeaguesReducer';
-import './LeaguesTable.css'
+import './css/LeaguesTable.css'
 
 function LeaguesTable(state) {
   const {renderState} = useSelector((state) => state.renderState)
