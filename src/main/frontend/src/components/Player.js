@@ -7,7 +7,10 @@ function Player({player}) {
             alt='Image' 
             className={`player${player.position}`}>
         </img>
-        <div className='playerName'>{player.web_name}</div>
+        <div className='underPlayerWriting'>
+            {player.web_name} <br />
+            {player.event_points}
+        </div>
     </div>
   )
 }

@@ -9,6 +9,7 @@ public class FPLplayer {
     public String photo;
     public int element_type; //code for position - 1 = GK, 2 = def etc...
     public int points;
+    public int event_points;
     public int dreamteam_count;
     public String form;
     public int minutes;
@@ -56,7 +57,7 @@ public class FPLplayer {
         this.is_vice_captain = is_vice_captain;
     }
 
-    public FPLplayer(int id, int position, boolean is_captain, boolean is_vice_captain, String web_name, String photo, int element_type, int points, String pts_per_game, int goals_scored, int assists, double xG_per90, double xA_per90, double xGi_per90, String influence, String threat, int bps, int num_bonus_pts, int clean_sheets, String form, double xG_conceded_per90, double saves_per90, double goals_conceded_per90, int now_cost, String selected_by_percent, String status) {
+    public FPLplayer(int id, int position, boolean is_captain, boolean is_vice_captain, String web_name, String photo, int element_type, int points, int event_points, String pts_per_game, int goals_scored, int assists, double xG_per90, double xA_per90, double xGi_per90, String influence, String threat, int bps, int num_bonus_pts, int clean_sheets, String form, double xG_conceded_per90, double saves_per90, double goals_conceded_per90, int now_cost, String selected_by_percent, String status) {
         this.id = id;
         this.position = position;
         this.is_captain = is_captain;
@@ -83,6 +84,7 @@ public class FPLplayer {
         this.now_cost = now_cost;
         this.selected_by_percent = selected_by_percent;
         this.status = status;
+        this.event_points = event_points;
     }
 
     public int getID() {return this.id;}

@@ -382,6 +382,7 @@ public class RestApiApplication {
                     String photo = element.getString("photo");
                     int element_type = element.getInt("element_type");
                     int points = element.getInt("total_points");
+                    int event_points = element.getInt("event_points");
                     String pts_per_game = element.getString("points_per_game");
                     int goals_scored = element.getInt("goals_scored");
                     int assists = element.getInt("assists");
@@ -401,7 +402,7 @@ public class RestApiApplication {
                     String selected_by_percent = element.getString("selected_by_percent");
                     String status = element.getString("status");
 
-                    return new FPLplayer(fplplayer.getID(), fplplayer.getPosition(), fplplayer.isCap(), fplplayer.isViceCap(), web_name, photo, element_type, points, pts_per_game, goals_scored, assists, xG_per90, xA_per90, xGi_per90, influence, threat, bps, num_bonus_pts, clean_sheets, form, xG_conceded_per90, saves_per90, goals_conceded_per90, cost, selected_by_percent, status);
+                    return new FPLplayer(fplplayer.getID(), fplplayer.getPosition(), fplplayer.isCap(), fplplayer.isViceCap(), web_name, photo, element_type, points, event_points, pts_per_game, goals_scored, assists, xG_per90, xA_per90, xGi_per90, influence, threat, bps, num_bonus_pts, clean_sheets, form, xG_conceded_per90, saves_per90, goals_conceded_per90, cost, selected_by_percent, status);
                 }
             }
             System.out.println("======= something went wrong =======");

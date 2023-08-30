@@ -8,18 +8,27 @@
     z-index: 1;
     left: -548px;
     top: 40px;
+    /* padding: 10px; */
 }
 
 .goalkeeper, .defenders, .midfielders, .forwards {
     height: 25%;
     width: 100%;
     position: relative;
-    justify-content: center;
+    justify-content: space-evenly;
+    gap: 10px;
     display: flex;
     flex-direction: row;
 }
+.underPlayerWriting {
+    background-color: black;
+    border-radius: 5px;
+    color: white;
+    font-weight: bold;
+}
 
 .goalkeeper img, .defenders img, .midfielders img, .forwards img {
-    max-height: 80%;
-    object-fit: contain;
+    max-height: 60%;
+    max-width: 100%;
+    /* object-fit: contain; */
 }
