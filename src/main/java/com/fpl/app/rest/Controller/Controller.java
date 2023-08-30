@@ -16,6 +16,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fpl.app.rest.PlayerLeague;
 import com.fpl.app.rest.RestApiApplication;
+import com.fpl.app.rest.Player;
 import org.json.JSONObject;
 
 @RestController
@@ -24,11 +25,6 @@ public class Controller {
 
     public Controller(ObjectMapper objectMapper) {
         this.objectMapper = objectMapper;
-    }
-
-    @GetMapping("/api/league")
-    public String[] leagues() throws IOException {
-        return RestApiApplication.getLeagueStandings();
     }
 
     @PostMapping("/api/search")
@@ -80,5 +76,16 @@ public class Controller {
             String jsonString = objectMapper.writeValueAsString(list);
             return jsonString;
         }
+    }
+
+    @PostMapping("/api/get-user-team")
+    public String getUserFPL(@RequestBody String requestBody) throws IOException {
+        if (requestBody.isBlank()) { return "was empty";}
+        ObjectMapper objMapper = new ObjectMapper();
+        String formatted = requestBody.replace("\"", "").toLowerCase();
+        Player player = RestApiApplication.getUserFPLInfo(formatted);
+        String playerTeamInfo = objMapper.writerWithDefaultPrettyPrinter().writeValueAsString(player);
+        System.out.println(playerTeamInfo);
+        return playerTeamInfo;
     }
 }

@@ -1,6 +1,7 @@
 import React from 'react'
 import LeaguesTable from './LeaguesTable'
 import TeamContainer from './TeamContainer'
+import TeamStatsContainer from './TeamStatsContainer'
 import './css/UserInfoContainer.css'
 
 function UserInfoContainer({teamName, renderState}) {
@@ -10,6 +11,7 @@ function UserInfoContainer({teamName, renderState}) {
             <div className='userInfoContainer'>
                 <LeaguesTable className='Table'/>
                 <TeamContainer className='TeamContainer' />
+                <TeamStatsContainer />
             </div>
         )
     } else {

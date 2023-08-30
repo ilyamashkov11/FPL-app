@@ -2,14 +2,14 @@
     width: 25%;
     max-width: 328px;
     /* padding-top: 50px; */
-    /* padding-left: 50px; */
-    top: 50px;
-    left: 50px;
+    margin-left: 50px;
+    margin-right: 50px;
+    /* left: 50px; */
     margin-bottom: 30px;
     position: relative;
     display: flex;
-    /* max-height: 300px;
-    overflow-y: scroll;  */
+    max-height: 813px;
+    overflow-y: scroll; 
   }
 
   table {

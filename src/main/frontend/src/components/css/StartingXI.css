@@ -1,0 +1,25 @@
+.StartingXI {
+    display: flex;
+    height: 730px;
+    min-width: 520px;
+    flex-direction: column;
+    position: relative;
+    /* align-items: center; */
+    z-index: 1;
+    left: -548px;
+    top: 40px;
+}
+
+.goalkeeper, .defenders, .midfielders, .forwards {
+    height: 25%;
+    width: 100%;
+    position: relative;
+    justify-content: center;
+    display: flex;
+    flex-direction: row;
+}
+
+.goalkeeper img, .defenders img, .midfielders img, .forwards img {
+    max-height: 80%;
+    object-fit: contain;
+}

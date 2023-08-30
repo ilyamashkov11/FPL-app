@@ -1,5 +1,4 @@
 package com.fpl.app.rest;
-
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -9,6 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -17,6 +17,8 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -35,13 +37,10 @@ public class RestApiApplication {
     /*
      * ALL API ENDPOINTS
      */
-    // private static String bootstrap_url =
-    // "https://fantasy.premierleague.com/api/bootstrap-static/";
+    private static String bootstrap_url = "https://fantasy.premierleague.com/api/bootstrap-static/";
     private static String league_standings__url = "https://fantasy.premierleague.com/api/leagues-classic/" + league_id
             + "/standings/";
     private static String my_info_url = "https://fantasy.premierleague.com/api/me/";
-    // private static String element_url =
-    // "https://fantasy.premierleague.com/api/me/";
     private static String manager_url = "https://fantasy.premierleague.com/api/entry/";
 
     private static String player_image = "https://resources.premierleague.com/premierleague/photos/players/110x140/p"; // + photo attribute from bootstrap-static
@@ -59,11 +58,7 @@ public class RestApiApplication {
      * @throws ClassNotFoundException
      */
     public static void main(String[] args) throws IOException, SQLException, ClassNotFoundException {
-        // populateUsersTable();
         SpringApplication.run(RestApiApplication.class, args);
-        // findTeamNameInDB("the");
-        // findIDinDB("7");
-        // clearTable();
     }
 
     // region CONNECTING AND SENDING GET REQUESTS TO APIS
@@ -215,6 +210,23 @@ public class RestApiApplication {
         }
         return false;
     }
+
+    private static String[] getCurrentGW() throws IOException {
+        String[] apiResponse = connectToAPI(bootstrap_url, "events", "elements");
+        int currentGW_id = 0;
+        JSONArray EventsJsonArray = new JSONArray(apiResponse[0]);
+        for (int i = 0; i < EventsJsonArray.length(); i++) {
+            JSONObject event = EventsJsonArray.getJSONObject(i);
+            if (event.getBoolean("is_current")) {
+                currentGW_id = event.getInt("id");
+                break;
+            }
+        }
+        String[] returnArray = new String[2];
+        returnArray[0] = String.valueOf(currentGW_id);        
+        returnArray[1] = apiResponse[1];
+        return returnArray;
+    }
     // endregion
 
     // region DATA PROCESSING
@@ -320,7 +332,6 @@ public class RestApiApplication {
     public static List<PlayerLeague> getUserLeagues(String teamName, String user_id, ObjectMapper objmapper) throws SQLException, NumberFormatException, IOException {
 
          String[] result = connectToAPI(manager_url + String.valueOf(user_id), "leagues");
-         System.out.println("GetUserLeagues: " + result[0]);
         Map<String, Object> jsonMap = objmapper.readValue(result[0], new TypeReference<Map<String, Object>>() {});
         ArrayList<PlayerLeague> leagues = new ArrayList<>();
         // if(jsonMap != null) {
@@ -337,6 +348,67 @@ public class RestApiApplication {
         
         return leagues;
     }
-    // endregion
 
+    public static Player getUserFPLInfo(String user_id) throws IOException {
+        String[] efficiencyArray = getCurrentGW();
+        FPLplayer[] team = new FPLplayer[15];
+        String currentGW_id = efficiencyArray[0];
+        JSONArray ElementsJsonArray = new JSONArray(efficiencyArray[1]);
+
+        String[] generalTeamInfo = connectToAPI("https://fantasy.premierleague.com/api/entry/" + user_id + "/event/" + String.valueOf(currentGW_id) + "/picks/", "picks", "active_chip", "entry_history");
+
+        JSONArray picksJSONArray = new JSONArray(generalTeamInfo[0]);
+        JSONObject event_history = new JSONObject(generalTeamInfo[2]);
+        String active_chip = generalTeamInfo[1];
+
+        int team_value = event_history.getInt("value");
+        int total_pts = event_history.getInt("total_points");        
+        int pts_this_gw = event_history.getInt("points");
+        int pts_on_bench = event_history.getInt("points_on_bench");
+        int num_transfers_made = event_history.getInt("event_transfers");
+
+        for (int i = 0; i < picksJSONArray.length(); i++) {
+            JSONObject playerJSON = picksJSONArray.getJSONObject(i);
+            team[i] = new FPLplayer(playerJSON.getInt("element"), playerJSON.getInt("position"), playerJSON.getBoolean("is_captain"), playerJSON.getBoolean("is_vice_captain"));
+        }
+
+        List<FPLplayer> detailedTeam = Arrays.stream(team).map((fplplayer) -> {
+            int id = fplplayer.getID();
+            for (int i = 0; i < ElementsJsonArray.length(); i++) {
+                JSONObject element = ElementsJsonArray.getJSONObject(i);
+                int element_id = element.getInt("id");
+                if (id == element_id) {
+                    String web_name = element.getString("web_name");
+                    String photo = element.getString("photo");
+                    int element_type = element.getInt("element_type");
+                    int points = element.getInt("total_points");
+                    String pts_per_game = element.getString("points_per_game");
+                    int goals_scored = element.getInt("goals_scored");
+                    int assists = element.getInt("assists");
+                    double xG_per90 = element.getDouble("expected_goals_per_90");
+                    double xA_per90 = element.getDouble("expected_assists_per_90");
+                    double xGi_per90 = element.getDouble("expected_goal_involvements_per_90");
+                    String influence = element.getString("influence");
+                    int bps = element.getInt("bps");
+                    int num_bonus_pts = element.getInt("bonus");
+                    int clean_sheets = element.getInt("clean_sheets");
+                    String form = element.getString("form"); 
+                    double xG_conceded_per90 = element.getDouble("expected_goals_conceded_per_90");
+                    double saves_per90 = element.getDouble("saves_per_90");
+                    double goals_conceded_per90 = element.getDouble("goals_conceded_per_90");
+                    int cost = element.getInt("now_cost");
+                    String threat = element.getString("threat");
+                    String selected_by_percent = element.getString("selected_by_percent");
+                    String status = element.getString("status");
+
+                    return new FPLplayer(fplplayer.getID(), fplplayer.getPosition(), fplplayer.isCap(), fplplayer.isViceCap(), web_name, photo, element_type, points, pts_per_game, goals_scored, assists, xG_per90, xA_per90, xGi_per90, influence, threat, bps, num_bonus_pts, clean_sheets, form, xG_conceded_per90, saves_per90, goals_conceded_per90, cost, selected_by_percent, status);
+                }
+            }
+            System.out.println("======= something went wrong =======");
+            return null;
+        }).toList();
+
+        return new Player(user_id, detailedTeam, active_chip, team_value, total_pts, pts_this_gw, pts_on_bench, num_transfers_made);
+    }
+    // endregion
 }

@@ -32,7 +32,7 @@ function LeaguesTable(state) {
 
   useEffect(() => {
     console.log("7 - USE EFFECT 1 CALLED BECAUSE LEAGUESTABLE NOW RENDERING OR ID CHANGED")
-    if (leagues === undefined || leagues.length === 0){ //! THERE IS A PROBLEM HERE SOMEWHERE (OR AT LEAST RELATED TO HERE) CURRENTLY WORKS FOR SELECTNG TEAM BUT NOT FOR ENTERING ID (ALTERNATES) LOOK AT THE REDUX DEVTOOLS!!!!
+    if (leagues === undefined || leagues.length === 0){ 
       console.log('8 - LEAGUES == [], CALLS fetchData()')
       fetchData(teamName);
     } else if (leagues !== undefined ) {

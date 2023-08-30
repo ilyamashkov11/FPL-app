@@ -1,16 +1,16 @@
 .TeamContainer {
-    top: 50px;
-    width: 50%;
-    max-width: 650px;
-    left: 0px;
+    height: 900px;
+    width: 575.5px;
+    /* padding-left: 100px; */
+    /* padding-right: 100px; */
     position: relative;
-    /* position: fixed; */
+    overflow: hidden;
+    display: flex;
+    flex-direction: row;
 }
 
 .footballPitchImage {
-    transform: rotate(90deg);
     position: relative;
     z-index: 0;
-    top: 120px;
-    width: 125%;
+    height: 813px;
 }
