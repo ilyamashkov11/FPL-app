@@ -1,0 +1,33 @@
+
+.midsTableContainer {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    overflow-x: scroll;
+  }
+
+.midsTable {
+  position: relative;
+  color: white;
+  background-color: rgba(255, 255, 255, 0.2);
+  border-collapse: collapse;
+  max-height: 813px;
+}
+
+.midsTable tr {
+  transition: all .2s ease-in;
+}
+
+.midsTable th, .midsTable td {
+  padding: 12px;
+  text-align: left;
+}
+
+.midsTable .Header {
+  background-color: green;
+}
+
+.midsTable .rows:hover {
+  transform: scale(1.02);
+  background-color: rgba(255, 255, 255, 0.4);
+}

@@ -29,7 +29,7 @@ public class FPLplayer {
     public int yellow_cards;
     public int red_cards;
     public int saves;
-    double saves_per90;
+    public double saves_per90;
     public int own_goals;
     public int num_bonus_pts; // total num of bonus pts earned this szn
     public int bps; // total bps score for the season -> shows whos playing well

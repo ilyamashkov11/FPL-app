@@ -4,31 +4,40 @@
     min-width: 520px;
     flex-direction: column;
     position: relative;
-    /* align-items: center; */
     z-index: 1;
-    left: -548px;
-    top: 40px;
-    /* padding: 10px; */
+    left: 25px;
+    top: -815px;
+    width: 90%;
 }
 
 .goalkeeper, .defenders, .midfielders, .forwards {
-    height: 25%;
-    width: 100%;
+    max-height: 25%;
+    max-width: 100%;
     position: relative;
     justify-content: space-evenly;
     gap: 10px;
     display: flex;
     flex-direction: row;
+    padding: 5px;
 }
 .underPlayerWriting {
-    background-color: black;
+    background-color: rgba(0,0,0, 0.75);
     border-radius: 5px;
     color: white;
     font-weight: bold;
 }
 
-.goalkeeper img, .defenders img, .midfielders img, .forwards img {
-    max-height: 60%;
-    max-width: 100%;
-    /* object-fit: contain; */
+.overheadText {
+    font-weight: bold;
+}
+
+.player1 img, .player2 img, .player3 img, .player4 img, .player5 img, .player6 img, .player7 img, .player8 img, .player9 img, .player10 img, .player11 img {
+    max-width: 86px;
+}
+
+.player1:hover, .player2:hover, .player3:hover, .player4:hover, .player5:hover, .player6:hover, .player7:hover, .player8:hover, .player9:hover, .player10:hover, .player11:hover, .player12:hover, .player13:hover, .player14:hover, .player15:hover {
+    cursor: pointer;
+    /* max-width: 96px; */
+    background-color: rgba(255, 255, 255, 0.3);
+    border-radius: 5px;
 }

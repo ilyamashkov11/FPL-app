@@ -5,7 +5,8 @@ function Goalkeeper({gk}) {
   return (
     <div className='goalkeeper'>
         {gk.map((player) => {
-            return <Player player={player} />
+            return  <Player player={player} key={player.position}/>
+
         })}
     </div>
   )

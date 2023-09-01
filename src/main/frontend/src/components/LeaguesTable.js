@@ -24,7 +24,6 @@ function LeaguesTable(state) {
         console.log("12 - SETS apiResponse, LEAGUES")
         setApiresponse(response);
         dispatch(setLeagues(response))
-        // console.log('response ' +response)
         return response
       })
     }
@@ -41,16 +40,7 @@ function LeaguesTable(state) {
     } else {
       console.log('leagues === []')
     }
-    // fetchData(teamName)
-    // setApiresponse(leagues)
   }, [user_id]);
-
-  // useEffect(() => {
-  //   console.log("use effect 2: ")
-  //   if (apiResponse.length > 0) {
-  //     dispatch(setLeagues(apiResponse)); // Update leagues in Redux store
-  //   }
-  // }, [apiResponse]);
 
   const data = useMemo(() => apiResponse || [], [])
   const columns = useMemo(() => [
@@ -64,18 +54,15 @@ function LeaguesTable(state) {
     }
   ], [])
 
- 
-  
-  // console.log('apiResponse' + apiResponse)
   const {headerGroups, rows, getTableProps, getTableBodyProps, prepareRow} = useTable({ columns, data: apiResponse || [apiResponse] });
 
   return (
     <div className="leaguesTableContainer">
     {apiResponse.length === 0 ? (<p>Loading Table...</p>) : (
-    <table {...getTableProps()}>
+    <table {...getTableProps()} className='LeaguesTable'>
       <thead>
         {headerGroups.map((headerGroup) => (
-          <tr {...headerGroup.getHeaderGroupProps()}>
+          <tr {...headerGroup.getHeaderGroupProps()} className='Header'>
             {headerGroup.headers.map((column) => (
               <th {...column.getHeaderProps()}>
                 {column.render("Header")}
@@ -88,7 +75,7 @@ function LeaguesTable(state) {
         {rows.map((row) => {
           prepareRow(row);
           return (
-            <tr {...row.getRowProps()}>
+            <tr {...row.getRowProps()} className='rows'>
               {row.cells.map((cell) => (
                 <td {...cell.getCellProps()}> {cell.render("Cell")} </td>
               ))}

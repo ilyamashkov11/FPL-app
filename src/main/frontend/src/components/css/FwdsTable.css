@@ -1,0 +1,32 @@
+
+.fwdsTableContainer {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    overflow-x: scroll;
+  }
+
+.fwdsTable {
+  position: relative;
+  color: white;
+  background-color: rgba(255, 255, 255, 0.2);
+  border-collapse: collapse;
+}
+
+.fwdsTable tr {
+  transition: all .2s ease-in;
+}
+
+.fwdsTable th, .fwdsTable td {
+  padding: 12px;
+  text-align: left;
+}
+
+.fwdsTable .Header {
+  background-color: green;
+}
+
+.fwdsTable .rows:hover {
+  transform: scale(1.02);
+  background-color: rgba(255, 255, 255, 0.4);
+}

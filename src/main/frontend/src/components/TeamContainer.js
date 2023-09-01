@@ -28,8 +28,6 @@ function TeamContainer() {
   const {data, isSuccess} = useQuery(["player", user_id], getUserTeam)
   
   useEffect(() => {
-    // getUserTeam() is an async function, so you can't directly log its return value here
-    // Instead, you can access the data from the useQuery hook
     if (isSuccess) {
       setChip(data.chip)
       setTeamValue(data.team_value)
@@ -40,7 +38,7 @@ function TeamContainer() {
 
       const starterArray = []
       const benchArray = []
-      // console.log('==== FOR EACH ====')
+      
       data.team.forEach((player) => {
         if (player.position <= 11) {
           starterArray.push(player)
@@ -48,10 +46,7 @@ function TeamContainer() {
           benchArray.push(player)
         }
       })
-      // console.log(starterArray)
-      // console.log('==== SETTING ARRAYS ====')
       setStartingXI(starterArray)
-      // console.log(starterArray)
       setBench(benchArray)
     }
   }, [isSuccess, user_id]);

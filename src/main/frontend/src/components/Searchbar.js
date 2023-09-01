@@ -48,9 +48,6 @@ function Searchbar() {
           dispatch(setID(response[0][0]))
           dispatch(setName(response[0][1].replace(/"/g, '')))
           dispatch(setTrue())
-          // const teamNames = response1.map((user) => user[1])
-          // setResults(teamNames)
-          // setIds(ids)
         })
       }
       console.log('6 - CLEARING INPUT FROM SEARCH BAR')

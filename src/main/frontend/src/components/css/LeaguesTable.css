@@ -1,52 +1,40 @@
-.leaguesTableContainer {
-    width: 25%;
-    max-width: 328px;
-    /* padding-top: 50px; */
-    margin-left: 50px;
-    margin-right: 50px;
-    /* left: 50px; */
-    margin-bottom: 30px;
+
+  .leaguesTableContainer {
+    /* max-width: 350px; */
+    min-width: 360px;
+    margin-left: 20px;
     position: relative;
-    display: flex;
-    max-height: 813px;
-    overflow-y: scroll; 
+    /* display: flex; */
+    overflow-x: hidden;
+    overflow-y: scroll;
+    /* max-height: 813px; */
   }
 
-  table {
-    left: 5%;
-    width: 350px;
-    max-width: 350px;
-    border-collapse: collapse;
-    overflow: hidden;
-    max-height: 300px;
-    text-align: left;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-  }
+.LeaguesTable {
+  /* position: relative; */
+  color: white;
+  background-color: rgba(255, 255, 255, 0.2);
+  border-collapse: collapse;
+  width: 350px;
+  /* height: 813px; */
+  max-height: 813px;
+}
 
-  th, td {
-    padding: 15px;
-    background-color: rgba(255, 255, 255, 0.2);
-    color: black;
-  }
-  th {
-    text-align: left;
-  }
-  thead th {
-    background-color: #55608f;
-  }
-  tbody tr:hover {
-    background-color: rgba(255, 255, 255, 0.3);
-  }
-  tbody td {
-    position: relative;
-  }
-  tbody td:hover:before {
-    content: "";
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: -9999px;
-    bottom: -9999px;
-    background-color: rgba(255, 255, 255, 0.2);
-    z-index: -1;
-  }
+.LeaguesTable tr {
+  transition: all .2s ease-in;
+  height: 42.5px;
+}
+
+.LeaguesTable th, .LeaguesTable td {
+  padding: 12px;
+  text-align: left;
+}
+
+.LeaguesTable .Header {
+  background-color: green;
+}
+
+.LeaguesTable .rows:hover {
+  transform: scale(1.02);
+  background-color: rgba(255, 255, 255, 0.4);
+}

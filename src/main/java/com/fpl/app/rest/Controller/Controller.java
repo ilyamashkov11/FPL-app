@@ -2,16 +2,12 @@ package com.fpl.app.rest.Controller;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
-// import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fpl.app.rest.PlayerLeague;
@@ -64,14 +60,14 @@ public class Controller {
             jsonObject.put("value", value);
             
             String newRequestBody = jsonObject.toString();
-            System.out.println("new request body: " + newRequestBody);
+            // System.out.println("new request body: " + newRequestBody);
             JsonNode jsonNode = objectMapper.readTree(newRequestBody);
             
             String teamName1 = jsonNode.get("value").asText();
             String user_id1 = jsonNode.get("user_id").asText();
             
             List<PlayerLeague> list = RestApiApplication.getUserLeagues(teamName1, user_id1, objectMapper);
-            System.out.println("the leagues" + list.toString());
+            // System.out.println("the leagues" + list.toString());
             
             String jsonString = objectMapper.writeValueAsString(list);
             return jsonString;

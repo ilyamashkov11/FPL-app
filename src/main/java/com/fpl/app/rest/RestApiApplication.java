@@ -40,7 +40,7 @@ public class RestApiApplication {
     private static String bootstrap_url = "https://fantasy.premierleague.com/api/bootstrap-static/";
     private static String league_standings__url = "https://fantasy.premierleague.com/api/leagues-classic/" + league_id
             + "/standings/";
-    private static String my_info_url = "https://fantasy.premierleague.com/api/me/";
+    // private static String my_info_url = "https://fantasy.premierleague.com/api/me/";
     private static String manager_url = "https://fantasy.premierleague.com/api/entry/";
 
     private static String player_image = "https://resources.premierleague.com/premierleague/photos/players/110x140/p"; // + photo attribute from bootstrap-static
@@ -293,15 +293,10 @@ public class RestApiApplication {
                 String team_name = result.getString("team_name");
                 output[0][0] = entry_id;
                 output[0][1] = team_name;
-                System.out.println(output[0][0] +" "+ output[0][1]);
+                // System.out.println(output[0][0] +" "+ output[0][1]);
                 return output;
             } else {
                 return populateUsersTable(input);
-                // String sqlSelectAgain = "SELECT * FROM Users WHERE entry_id = ?";
-                // PreparedStatement preparedStatement = connection.prepareStatement(sqlSelect);
-                // preparedStatement.setString(1, input);
-                // ResultSet result = preparedStatement.executeQuery();
-                // return output;
             }
         }
     }
@@ -312,7 +307,6 @@ public class RestApiApplication {
         try (Connection connection = ConnectionPoolManager.getDataSource().getConnection()) {
             String sql = "SELECT * FROM Users WHERE team_name LIKE ?";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            // preparedStatement.setString(1, "\"" + input + "\"");  
             preparedStatement.setString(1, "%" + input + "%");
 
             ResultSet result = preparedStatement.executeQuery();

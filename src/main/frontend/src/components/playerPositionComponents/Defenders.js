@@ -5,7 +5,7 @@ function Defenders({defenders}) {
   return (
     <div className='defenders'>
         {defenders.map((player) => {
-            return <Player player={player} />
+            return <Player player={player} key={player.position}/>
         })}
     </div>
   )

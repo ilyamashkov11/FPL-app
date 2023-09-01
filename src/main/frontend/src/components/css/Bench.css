@@ -1,0 +1,17 @@
+.bench {
+    position: relative;
+    left: 25px;
+    top: -715px;
+    display: flex;
+    flex-direction: row;
+    z-index: 1;
+    width: 90%;
+    justify-content: space-evenly;
+    gap: 10px;
+    background-color: rgba(0,255,255, 0.4);
+    border-radius: 5px;
+
+}
+.player12 img, .player13 img, .player14 img, .player15 img {
+    max-width: 86px;
+}
