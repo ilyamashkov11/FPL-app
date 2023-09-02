@@ -13,7 +13,7 @@ public class FPLplayer {
     public int dreamteam_count;
     public String form;
     public int minutes;
-    public int now_cost;
+    public double now_cost;
     public String pts_per_game;
     public String selected_by_percent;
     public int goals_scored;
@@ -81,7 +81,7 @@ public class FPLplayer {
         this.xG_conceded_per90 = xG_conceded_per90;
         this.saves_per90 = saves_per90;
         this.goals_conceded_per90 = goals_conceded_per90;
-        this.now_cost = now_cost;
+        this.now_cost = now_cost/10.0;
         this.selected_by_percent = selected_by_percent;
         this.status = status;
         this.event_points = event_points;

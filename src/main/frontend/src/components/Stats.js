@@ -33,6 +33,9 @@ function Stats({ data, isSuccess }) {
         <div className="chipUsed">
           <h2>CHIP USED</h2>
           {chipUsed(data.chip)}
+        </div> <div className="numTransfers">
+          <h2>TRANSFERS MADE</h2>
+          {data.num_transfers}
         </div>
       </div>
     );

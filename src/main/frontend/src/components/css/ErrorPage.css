@@ -1,0 +1,9 @@
+.errorMessage {
+    position: absolute;
+    font-weight: bolder;
+    font-size: 80px;
+    color: white;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
